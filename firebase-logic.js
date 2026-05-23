@@ -10,6 +10,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase (using global firebase object from CDN)
+
+// Initialize Firebase (using global firebase object from CDN)
 let auth1, db;
 
 function initFirebase() {
@@ -584,44 +586,46 @@ async function loadStudentProgress() {
       console.log('✓ Progress loaded from Firestore:', progressData);
       
       // Update the progress object in index.html if it exists
-      if (window.progress) {
+      if (typeof progress !== 'undefined') {
         // Clear existing completed to avoid duplicates
-        window.progress.completed.clear();
-        window.progress.inProgress.clear();
+        progress.completed.clear();
+        progress.inProgress.clear();
         
         // Mark completed modules (those at 100%)
         if (progressData.ankle === 100) {
-          window.progress.completed.add('ankle');
+          progress.completed.add('ankle');
           console.log('✓ Ankle marked as complete');
         } else if (progressData.ankle > 0) {
-          window.progress.inProgress.add('ankle');
+          progress.inProgress.add('ankle');
         }
         
         if (progressData.knee === 100) {
-          window.progress.completed.add('knee');
+          progress.completed.add('knee');
           console.log('✓ Knee marked as complete');
         } else if (progressData.knee > 0) {
-          window.progress.inProgress.add('knee');
+          progress.inProgress.add('knee');
         }
         
         if (progressData.terminology === 100) {
-          window.progress.completed.add('terminology');
+          progress.completed.add('terminology');
           console.log('✓ Terminology marked as complete');
         } else if (progressData.terminology > 0) {
-          window.progress.inProgress.add('terminology');
+          progress.inProgress.add('terminology');
         }
         
         // Update dashboard stats
-        if (window.updateDashboardStats) {
-          window.updateDashboardStats();
+        if (typeof updateDashboardStats === 'function') {
+          updateDashboardStats();
           console.log('✓ Dashboard stats updated');
         }
         
         // Update progress bars with actual percentages
-        if (window.updateAllProgressBars) {
-          window.updateAllProgressBars(progressData);
+        if (typeof updateAllProgressBars === 'function') {
+          updateAllProgressBars(progressData);
           console.log('✓ Progress bars updated');
         }
+      } else {
+        console.warn('⚠️ Progress object not found in window scope');
       }
     } else {
       console.log('No progress document found yet for user:', currentUser.uid);

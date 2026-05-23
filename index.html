@@ -75,6 +75,26 @@
   .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.12); }
   .nav-links a.active { color: #fff; background: rgba(255,255,255,0.18); }
 
+  #nav-auth {
+    display: none;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #nav-auth li {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  #user-name-display {
+    color: rgba(255,255,255,0.9);
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
   .nav-cta {
     background: #ffffff;
     color: var(--royal);
@@ -160,6 +180,29 @@
 
   .page { display: none; animation: fadeIn 0.25s ease; }
   .page.active { display: block; }
+
+  /* LOGIN PAGE FULL SCREEN */
+  #page-login {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    background: var(--bg);
+  }
+  
+  #page-login.active {
+    display: flex;
+  }
+
+  #page-login.active ~ .sidebar,
+  #page-login.active ~ .main {
+    display: none;
+  }
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
@@ -1113,7 +1156,7 @@
     <li><a href="#" onclick="showPage('teacher',this);return false;" id="nav-teacher-dashboard" style="display:none;">Teacher Dashboard</a></li>
     <li><a href="#" onclick="showPage('quickref',this);return false;">Quick Reference</a></li>
   </ul>
-  <ul class="nav-links" id="nav-auth" style="display:none;gap:12px;">
+  <ul class="nav-links" id="nav-auth" style="gap:12px;">
     <li><span id="user-name-display" style="color:rgba(255,255,255,0.9);padding:7px 14px;border-radius:6px;"></span></li>
     <li><button id="logout-btn" class="nav-cta" style="padding:8px 16px;font-size:0.84rem;">Logout</button></li>
   </ul>
@@ -1121,8 +1164,8 @@
 
 <div class="app">
   <!-- LOGIN PAGE -->
-  <div id="page-login" class="page active" style="width:100%;display:flex;align-items:center;justify-content:center;padding:20px;">
-    <div style="background:var(--white);border-radius:14px;box-shadow:var(--shadow-hover);padding:40px;max-width:420px;width:100%;">
+  <div id="page-login" class="page active">
+    <div style="background:var(--white);border-radius:14px;box-shadow:var(--shadow-hover);padding:40px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;">
       <div style="text-align:center;margin-bottom:32px;">
         <div class="logo" style="font-size:2rem;margin-bottom:12px;color:var(--royal);">AT<span style="color:rgba(26,61,181,0.55);">las</span></div>
         <h2 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text);margin-bottom:6px;">Welcome Back</h2>
@@ -1906,30 +1949,96 @@ function updateAllProgressBars(progressData) {
   
   // Update ankle progress
   if (progressData && progressData.ankle !== undefined) {
+    // Update skill card progress bar
     document.querySelectorAll('[onclick*="ankle"] .mini-fill').forEach(el => {
       el.style.width = progressData.ankle + '%';
       if (progressData.ankle === 100) {
         el.style.background = 'var(--green)';
+      } else if (progressData.ankle > 0) {
+        el.style.background = 'var(--royal)';
+      }
+    });
+    // Update sidebar progress bar and dot
+    document.querySelectorAll('[onclick*="ankle"]').forEach(el => {
+      // Update dot
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot && progressData.ankle === 100) {
+        dot.style.background = 'var(--green)';
+      }
+      // Update progress bar
+      const progressBar = el.nextElementSibling;
+      if (progressBar && progressBar.classList.contains('progress-bar')) {
+        const fill = progressBar.querySelector('.progress-fill');
+        if (fill) {
+          fill.style.width = progressData.ankle + '%';
+          if (progressData.ankle === 100) {
+            fill.style.background = 'var(--green)';
+          }
+        }
       }
     });
   }
   
   // Update knee progress
   if (progressData && progressData.knee !== undefined) {
+    // Update skill card progress bar
     document.querySelectorAll('[onclick*="knee"] .mini-fill').forEach(el => {
       el.style.width = progressData.knee + '%';
       if (progressData.knee === 100) {
         el.style.background = 'var(--green)';
+      } else if (progressData.knee > 0) {
+        el.style.background = 'var(--royal)';
+      }
+    });
+    // Update sidebar progress bar and dot
+    document.querySelectorAll('[onclick*="knee"]').forEach(el => {
+      // Update dot
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot && progressData.knee === 100) {
+        dot.style.background = 'var(--green)';
+      }
+      // Update progress bar
+      const progressBar = el.nextElementSibling;
+      if (progressBar && progressBar.classList.contains('progress-bar')) {
+        const fill = progressBar.querySelector('.progress-fill');
+        if (fill) {
+          fill.style.width = progressData.knee + '%';
+          if (progressData.knee === 100) {
+            fill.style.background = 'var(--green)';
+          }
+        }
       }
     });
   }
   
   // Update terminology progress
   if (progressData && progressData.terminology !== undefined) {
+    // Update skill card progress bar
     document.querySelectorAll('[onclick*="terminology"] .mini-fill').forEach(el => {
       el.style.width = progressData.terminology + '%';
       if (progressData.terminology === 100) {
         el.style.background = 'var(--green)';
+      } else if (progressData.terminology > 0) {
+        el.style.background = 'var(--royal)';
+      }
+    });
+    // Update sidebar progress bar and dot
+    document.querySelectorAll('[onclick*="terminology"]').forEach(el => {
+      // Update dot
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot && progressData.terminology === 100) {
+        dot.style.background = 'var(--green)';
+      }
+      // Update progress bar
+      const progressBar = el.nextElementSibling;
+      if (progressBar && progressBar.classList.contains('progress-bar')) {
+        const fill = progressBar.querySelector('.progress-fill');
+        if (fill) {
+          fill.style.width = progressData.terminology + '%';
+          if (progressData.terminology === 100) {
+            fill.style.background = 'var(--green)';
+          }
+        }
       }
     });
   }

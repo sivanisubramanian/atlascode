@@ -1887,35 +1887,24 @@ function handleMatchClick(type, value, el) {
 }
 
 
-// -----------------------------
-// PROGRESS STATE (UI ONLY)
-// -----------------------------
 const progress = {
   inProgress: new Set(),
   completed: new Set(),
   totalModules: 3 // ankle, knee, terminology
 };
 
-// -----------------------------
-// DASHBOARD STATS
-// -----------------------------
 function updateDashboardStats() {
   const inProg = progress.inProgress.size;
   const comp = progress.completed.size;
-  const remaining = Math.max(0, progress.totalModules - comp);
-
+  const remaining = progress.totalModules - comp;
   const el_ip = document.getElementById('stat-inprogress');
   const el_rem = document.getElementById('stat-remaining');
   const el_comp = document.getElementById('stat-completed');
-
   if (el_ip) el_ip.textContent = inProg;
-  if (el_rem) el_rem.textContent = remaining;
+  if (el_rem) el_rem.textContent = Math.max(0, remaining);
   if (el_comp) el_comp.textContent = comp;
 }
 
-// -----------------------------
-// LOCAL STATE UPDATES (UI ONLY)
-// -----------------------------
 function markModuleInProgress(key) {
   if (!progress.completed.has(key)) {
     progress.inProgress.add(key);
@@ -1926,65 +1915,135 @@ function markModuleInProgress(key) {
 function markModuleComplete(key) {
   progress.inProgress.delete(key);
   progress.completed.add(key);
-
   updateDashboardStats();
-
-  // update UI immediately
+  // Update progress bar and card
   updateModuleCardUI(key);
-
-  // sync to Firebase
+  
+  // Track in Firebase if student is logged in
   if (currentUserRole === 'student' && window.updateStudentProgress) {
-    window.updateStudentProgress(key, 0);
+    window.updateStudentProgress(key, 1, true);
   }
 }
 
-// -----------------------------
-// SIMPLE UI UPDATE (LOCAL ONLY)
-// -----------------------------
 function updateModuleCardUI(key) {
-  document.querySelectorAll(`[onclick*="${key}"] .mini-fill`).forEach(el => {
-    el.style.width = '100%';
-    el.style.background = 'var(--green)';
+  // Turn progress bars green for completed modules
+  document.querySelectorAll('.mini-fill').forEach(el => {
+    const card = el.closest('.skill-card');
+    if (card && card.getAttribute('onclick') && card.getAttribute('onclick').includes(key)) {
+      el.style.width = '100%';
+      el.style.background = 'var(--green)';
+    }
   });
-
-  document.querySelectorAll(`[onclick*="${key}"] .sidebar-dot`).forEach(dot => {
-    dot.style.background = 'var(--green)';
+  // Update sidebar dot
+  document.querySelectorAll('.sidebar-item').forEach(el => {
+    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(key)) {
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot) dot.style.background = 'var(--green)';
+    }
   });
 }
 
-// -----------------------------
-// FIREBASE → UI SYNC (SINGLE SOURCE OF TRUTH)
-// -----------------------------
+// Update all progress bars from progress data
 function updateAllProgressBars(progressData) {
-  if (!progressData) return;
-
-  const keys = ['ankle', 'knee', 'terminology'];
-
-  keys.forEach((key) => {
-    const percent = progressData[key] || 0;
-
-    // update all progress bars
-    document.querySelectorAll(`[onclick*="${key}"] .mini-fill`).forEach(el => {
-      el.style.width = percent + '%';
-
-      el.style.background =
-        percent === 100 ? 'var(--green)' :
-        percent > 0 ? 'var(--royal)' :
-        '#ddd';
-    });
-
-    // update sidebar dots only
-    document.querySelectorAll(`[onclick*="${key}"] .sidebar-dot`).forEach(dot => {
-      if (percent === 100) {
-        dot.style.background = 'var(--green)';
-      } else if (percent > 0) {
-        dot.style.background = 'var(--royal)';
-      } else {
-        dot.style.background = '';
+  console.log('Updating all progress bars with:', progressData);
+  
+  // Update ankle progress
+  if (progressData && progressData.ankle !== undefined) {
+    // Update skill card progress bar
+    document.querySelectorAll('[onclick*="ankle"] .mini-fill').forEach(el => {
+      el.style.width = progressData.ankle + '%';
+      if (progressData.ankle === 100) {
+        el.style.background = 'var(--green)';
+      } else if (progressData.ankle > 0) {
+        el.style.background = 'var(--royal)';
       }
     });
-  });
+    // Update sidebar progress bar and dot
+    document.querySelectorAll('[onclick*="ankle"]').forEach(el => {
+      // Update dot
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot && progressData.ankle === 100) {
+        dot.style.background = 'var(--green)';
+      }
+      // Update progress bar
+      const progressBar = el.nextElementSibling;
+      if (progressBar && progressBar.classList.contains('progress-bar')) {
+        const fill = progressBar.querySelector('.progress-fill');
+        if (fill) {
+          fill.style.width = progressData.ankle + '%';
+          if (progressData.ankle === 100) {
+            fill.style.background = 'var(--green)';
+          }
+        }
+      }
+    });
+  }
+  
+  // Update knee progress
+  if (progressData && progressData.knee !== undefined) {
+    // Update skill card progress bar
+    document.querySelectorAll('[onclick*="knee"] .mini-fill').forEach(el => {
+      el.style.width = progressData.knee + '%';
+      if (progressData.knee === 100) {
+        el.style.background = 'var(--green)';
+      } else if (progressData.knee > 0) {
+        el.style.background = 'var(--royal)';
+      }
+    });
+    // Update sidebar progress bar and dot
+    document.querySelectorAll('[onclick*="knee"]').forEach(el => {
+      // Update dot
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot && progressData.knee === 100) {
+        dot.style.background = 'var(--green)';
+      }
+      // Update progress bar
+      const progressBar = el.nextElementSibling;
+      if (progressBar && progressBar.classList.contains('progress-bar')) {
+        const fill = progressBar.querySelector('.progress-fill');
+        if (fill) {
+          fill.style.width = progressData.knee + '%';
+          if (progressData.knee === 100) {
+            fill.style.background = 'var(--green)';
+          }
+        }
+      }
+    });
+  }
+  
+  // Update terminology progress
+  if (progressData && progressData.terminology !== undefined) {
+    // Update skill card progress bar
+    document.querySelectorAll('[onclick*="terminology"] .mini-fill').forEach(el => {
+      el.style.width = progressData.terminology + '%';
+      if (progressData.terminology === 100) {
+        el.style.background = 'var(--green)';
+      } else if (progressData.terminology > 0) {
+        el.style.background = 'var(--royal)';
+      }
+    });
+    // Update sidebar progress bar and dot
+    document.querySelectorAll('[onclick*="terminology"]').forEach(el => {
+      // Update dot
+      const dot = el.querySelector('.sidebar-dot');
+      if (dot && progressData.terminology === 100) {
+        dot.style.background = 'var(--green)';
+      }
+      // Update progress bar
+      const progressBar = el.nextElementSibling;
+      if (progressBar && progressBar.classList.contains('progress-bar')) {
+        const fill = progressBar.querySelector('.progress-fill');
+        if (fill) {
+          fill.style.width = progressData.terminology + '%';
+          if (progressData.terminology === 100) {
+            fill.style.background = 'var(--green)';
+          }
+        }
+      }
+    });
+  }
 }
+
 
 const lessonData = {
   ankle: {

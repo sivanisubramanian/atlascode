@@ -2520,10 +2520,11 @@ function lessonNext() {
   if (currentLessonPage < lesson.pages.length - 1) {
     currentLessonPage++;
     renderLessonPage();
-    window.scrollTo(0, 0);
+    // Normal progress as they turn pages (isFinalStep = false)
+    updateStudentProgress(currentLesson, currentLessonPage, false); 
   } else {
-    // Finished
-    markModuleComplete(currentLesson);
+    // THEY HIT FINISH: Force 100% immediately (isFinalStep = true)
+    updateStudentProgress(currentLesson, currentLessonPage, true); 
     showPage(lessonOriginPage);
   }
 }

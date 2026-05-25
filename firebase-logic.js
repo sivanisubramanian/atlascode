@@ -519,55 +519,36 @@ async function initTeacherDashboard() {
 }
 
 // Update student progress
-async function updateStudentProgress(chapter, sectionIndex) {
-  if (!currentUser) {
-    console.error('Cannot update progress - not logged in');
-    return;
-  }
+async function updateStudentProgress(chapter, sectionIndex, isFinalStep = false) {
+  if (!currentUser) return;
 
   try {
-    console.log(`Updating progress for chapter: ${chapter}, section: ${sectionIndex}`);
-    
-    // Map chapter names to progress fields
     const progressKey = chapter.toLowerCase();
-    
-    // Get current progress
     const progressRef = db.collection('student_progress').doc(currentUser.uid);
-    const progressSnap = await progressRef.get();
     
-    if (!progressSnap.exists) {
-      console.error('Progress document does not exist');
-      return;
-    }
-    
-    const currentProgress = progressSnap.data();
-    
-    // Calculate progress increment (4 sections per chapter = 25% each)
-    // Only increment if not already at 100%
-    if ((currentProgress[progressKey] || 0) < 100) {
-      currentProgress[progressKey] = Math.min(100, (currentProgress[progressKey] || 0) + 25);
-    }
+    // 1. Logic Switch: If it's the final step, skip math and go straight to 100
+    let calculatedProgress = isFinalStep ? 100 : Math.min(100, (sectionIndex + 1) * 25);
 
-    // Build update object
+    // 2. Build the update
     const updateData = {
-      ...currentProgress,
+      [progressKey]: calculatedProgress,
       lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
       userId: currentUser.uid
     };
-    
-    console.log('Saving to Firestore:', updateData);
 
-    // Save to Firestore with timestamp
+    // 3. Add to the teacher's list if completed
+    if (calculatedProgress === 100) {
+      updateData.completedModules = firebase.firestore.FieldValue.arrayUnion(chapter);
+    }
+
+    // 4. Save (set with merge: true is safest)
     await progressRef.set(updateData, { merge: true });
-
-    console.log(`✓ Progress saved to Firestore for ${chapter}: ${currentProgress[progressKey]}%`);
     
-    // Reload progress from DB to ensure UI is in sync
+    console.log(`✓ Updated ${chapter} to ${calculatedProgress}% (Final Step: ${isFinalStep})`);
     await loadStudentProgress();
     
   } catch (error) {
-    console.error('❌ Error updating progress:', error);
-    console.error('Error details:', error.code, error.message);
+    console.error('❌ Update failed:', error);
   }
 }
 

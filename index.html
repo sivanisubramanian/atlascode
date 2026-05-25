@@ -1149,12 +1149,18 @@
   <ul class="nav-links" id="nav-main">
     <li><a href="#" class="active" onclick="showPage('dashboard',this);return false;" id="nav-student-dashboard">Dashboard</a></li>
     <li><a href="#" onclick="showPage('teacher',this);return false;" id="nav-teacher-dashboard" style="display:none;">Teacher Dashboard</a></li>
+    <li><a href="#" onclick="enterStudentView();return false;" id="nav-student-view" style="display:none;">Student View</a></li>
     
   <ul class="nav-links" id="nav-auth" style="gap:12px;">
     <li><span id="user-name-display" style="color:rgba(255,255,255,0.9);padding:7px 14px;border-radius:6px;"></span></li>
     <li><button id="logout-btn" class="nav-cta" style="padding:8px 16px;font-size:0.84rem;">Logout</button></li>
   </ul>
 </nav>
+
+<div id="teacher-preview-banner" style="display:none;position:fixed;top:64px;left:0;right:0;z-index:90;background:linear-gradient(90deg,#7c3aed,#1a3db5);color:#fff;align-items:center;justify-content:space-between;padding:10px 40px;font-size:0.82rem;font-weight:600;box-shadow:0 2px 12px rgba(124,58,237,0.25);">
+  <span> <strong>Preview Mode</strong> — You are viewing the student experience. No progress will be saved.</span>
+  <button onclick="exitStudentView()" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);color:#fff;padding:6px 16px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;">← Exit Student View</button>
+</div>
 
 <div class="app">
   <!-- LOGIN PAGE -->
@@ -1338,6 +1344,48 @@
       </div>
     </div>
 
+    <!-- STUDENT PREVIEW PAGE -->
+    <div id="page-student-preview" class="page">
+      <div class="dashboard-header">
+        <div class="greeting">Previewing as student</div>
+        <h1>Your AT Learning <span>Dashboard</span></h1>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Skills in progress</div></div>
+        <div class="stat-card yellow-top"><div class="stat-num">3</div><div class="stat-label">Skills remaining</div></div>
+        <div class="stat-card green-top"><div class="stat-num">0</div><div class="stat-label">Skills completed</div></div>
+      </div>
+      <div class="section-title">Level 1 — Foundational Information for Club Members</div>
+      <div class="skill-grid">
+        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer">
+          <div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div><span class="badge level1">Level 1</span></div>
+          <h3>Ankle Anatomy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">2 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+        <div class="skill-card" onclick="startLesson('knee')" style="cursor:pointer">
+          <div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div><span class="badge level1">Level 1</span></div>
+          <h3>Knee Anatomy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">6 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+        <div class="skill-card" onclick="startLesson('terminology')" style="cursor:pointer">
+          <div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><span class="badge level1">Level 1</span></div>
+          <h3>Common Medical Terminology</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="section-title">Level 2 — Basic Skills for JV ATs</div>
+      <div class="skill-grid">
+        <div class="skill-card" style="opacity:0.45;pointer-events:none;border-style:dashed"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span class="badge level2">Level 2</span></div><h3>Coming Soon</h3><p>Level 2 skills for JV ATs will be added here.</p></div>
+      </div>
+      <div class="section-title">Level 3 — Advanced Information for Varsity ATs</div>
+      <div class="skill-grid">
+        <div class="skill-card" style="opacity:0.45;pointer-events:none;border-style:dashed"><div class="skill-card-header"><div class="skill-icon" style="background:#fff8e1;color:#f59f00"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span class="badge level3">Level 3</span></div><h3>Coming Soon</h3><p>Level 3 skills for Varsity ATs will be added here.</p></div>
+      </div>
+    </div>
+
     <!-- TEACHER VIEW PAGE -->
     <div id="page-teacher" class="page" >
       <div class="dashboard-header">
@@ -1409,6 +1457,28 @@ const skills = {
 };
 
 let prevPage = 'dashboard';
+let isTeacherPreviewMode = false;
+
+function enterStudentView() {
+  isTeacherPreviewMode = true;
+  const banner = document.getElementById('teacher-preview-banner');
+  if (banner) { banner.style.display = 'flex'; }
+  const sidebar = document.querySelector('.sidebar');
+  if (sidebar) sidebar.style.display = '';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-student-preview').classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  const first = document.querySelector('.sidebar-item');
+  if (first) first.classList.add('active');
+}
+
+function exitStudentView() {
+  isTeacherPreviewMode = false;
+  const banner = document.getElementById('teacher-preview-banner');
+  if (banner) { banner.style.display = 'none'; }
+  showPage('teacher', document.getElementById('nav-teacher-dashboard'));
+}
 
 function showPage(name, linkEl) {
   // Check if user is logged in (except for login page)
@@ -2474,7 +2544,7 @@ function startLesson(lessonKey) {
   currentLesson = lessonKey;
   currentLessonPage = 0;
   lessonOriginPage = document.querySelector('.page.active')?.id?.replace('page-', '') || 'dashboard';
-  markModuleInProgress(lessonKey);
+  if (!isTeacherPreviewMode) markModuleInProgress(lessonKey);
   renderLessonPage();
   showPage('lesson');
 }
@@ -2517,10 +2587,9 @@ function lessonNext() {
     currentLessonPage++;
     renderLessonPage();
     // Normal progress as they turn pages (isFinalStep = false)
-    updateStudentProgress(currentLesson, currentLessonPage, false); 
+    if (!isTeacherPreviewMode) updateStudentProgress(currentLesson, currentLessonPage, false);
   } else {
-    // THEY HIT FINISH: Force 100% immediately (isFinalStep = true)
-    updateStudentProgress(currentLesson, currentLessonPage, true); 
+    if (!isTeacherPreviewMode) updateStudentProgress(currentLesson, currentLessonPage, true);
     showPage(lessonOriginPage);
   }
 }

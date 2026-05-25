@@ -125,6 +125,8 @@ async function handleLogin() {
       // Show/hide dashboard links based on role
       if (studentDashboardLink) studentDashboardLink.style.display = userData.role === 'student' ? 'block' : 'none';
       if (teacherDashboardLink) teacherDashboardLink.style.display = userData.role === 'teacher' ? 'block' : 'none';
+      const studentViewLink = document.getElementById('nav-student-view');
+      if (studentViewLink) studentViewLink.style.display = userData.role === 'teacher' ? 'inline' : 'none';
 
       // Hide login page
       const loginPage = document.getElementById('page-login');
@@ -191,6 +193,9 @@ async function logout() {
     if (loginPage) loginPage.classList.add('active');
     if (studentDashboardLink) studentDashboardLink.style.display = 'block';
     if (teacherDashboardLink) teacherDashboardLink.style.display = 'none';
+    const studentViewLink = document.getElementById('nav-student-view');
+    if (studentViewLink) studentViewLink.style.display = 'none';
+    if (typeof isTeacherPreviewMode !== 'undefined' && isTeacherPreviewMode && typeof exitStudentView === 'function') { isTeacherPreviewMode = false; const b = document.getElementById('teacher-preview-banner'); if(b) b.style.display='none'; }
     
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     if (loginPage) loginPage.style.display = 'flex';

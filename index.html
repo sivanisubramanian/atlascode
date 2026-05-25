@@ -541,11 +541,6 @@
     .dashboard-header h1 { font-size: 1.5rem; }
     .skill-grid { grid-template-columns: 1fr; }
 
-    /* Quick reference */
-    .qr-grid { grid-template-columns: 1fr; }
-    .qr-table-row { grid-template-columns: 1fr; gap: 2px; }
-    .qr-table-row > div:not(:first-child) { padding-left: 10px; font-size: 0.72rem; color: var(--muted); }
-
     /* Lesson */
     .lesson-nav-inner { max-width: 100%; }
     .lesson-btn { padding: 9px 16px; font-size: 0.82rem; }
@@ -1154,8 +1149,7 @@
   <ul class="nav-links" id="nav-main">
     <li><a href="#" class="active" onclick="showPage('dashboard',this);return false;" id="nav-student-dashboard">Dashboard</a></li>
     <li><a href="#" onclick="showPage('teacher',this);return false;" id="nav-teacher-dashboard" style="display:none;">Teacher Dashboard</a></li>
-    <li><a href="#" onclick="showPage('quickref',this);return false;">Quick Reference</a></li>
-  </ul>
+    
   <ul class="nav-links" id="nav-auth" style="gap:12px;">
     <li><span id="user-name-display" style="color:rgba(255,255,255,0.9);padding:7px 14px;border-radius:6px;"></span></li>
     <li><button id="logout-btn" class="nav-cta" style="padding:8px 16px;font-size:0.84rem;">Logout</button></li>
@@ -1197,12 +1191,6 @@
         </button>
 
         <div id="login-error" style="display:none;padding:12px 14px;background:#fff0f0;border:1px solid var(--red);border-radius:8px;color:var(--red);font-size:0.84rem;text-align:center;"></div>
-      </div>
-
-      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);text-align:center;font-size:0.80rem;color:var(--muted);">
-        <p>Demo Credentials:</p>
-        <p><strong>Student:</strong> student@example.com / password</p>
-        <p><strong>Teacher:</strong> teacher@example.com / password</p>
       </div>
     </div>
   </div>
@@ -1335,178 +1323,7 @@
       </div>
     </div>
 
-    <!-- QUICK REFERENCE PAGE -->
-    <div id="page-quickref" class="page">
-      <div class="dashboard-header">
-        <h1>Quick <span>Reference</span></h1>
-        <p style="color:var(--muted);margin-top:8px;font-size:0.88rem">Everything you need fast on the sideline. No fluff.</p>
-      </div>
-
-      <div class="qr-grid">
-
-        <!-- CONCUSSION RED FLAGS -->
-        <div class="qr-card qr-red">
-          <div class="qr-card-header">
-            <div class="qr-icon" style="background:var(--royal-pale);color:var(--royal)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            </div>
-            <div>
-              <div class="qr-card-title">Concussion Red Flags</div>
-              <div class="qr-card-sub">Remove from play immediately if any present</div>
-            </div>
-          </div>
-          <div class="qr-tags">
-            <span class="qr-tag blue">Headache or pressure</span>
-            <span class="qr-tag blue">Confusion / fog</span>
-            <span class="qr-tag blue">Memory gaps</span>
-            <span class="qr-tag blue">Sensitivity to light or noise</span>
-            <span class="qr-tag blue">Balance problems</span>
-            <span class="qr-tag blue">Nausea or vomiting</span>
-            <span class="qr-tag blue">Unequal pupils</span>
-            <span class="qr-tag blue">Loss of consciousness</span>
-            <span class="qr-tag blue">Slurred speech</span>
-          </div>
-          <div class="qr-rule">When in doubt, sit them out. No exceptions.</div>
-        </div>
-
-        <!-- HEAT ILLNESS -->
-        <div class="qr-card qr-yellow">
-          <div class="qr-card-header">
-            <div class="qr-icon" style="background:var(--royal-pale);color:var(--royal)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
-            </div>
-            <div>
-              <div class="qr-card-title">Heat Illness Spectrum</div>
-              <div class="qr-card-sub">Know the difference — heat stroke is life-threatening</div>
-            </div>
-          </div>
-          <div class="qr-spectrum">
-            <div class="qr-spectrum-item">
-              <div class="qr-spectrum-label" style="color:var(--text)">Heat Cramps</div>
-              <div class="qr-spectrum-desc">Painful muscle spasms, usually legs or abdomen. Still sweating. Alert and oriented.</div>
-              <div class="qr-spectrum-action">Rest, fluids, gentle stretching</div>
-            </div>
-            <div class="qr-spectrum-divider"></div>
-            <div class="qr-spectrum-item">
-              <div class="qr-spectrum-label" style="color:var(--text)">Heat Exhaustion</div>
-              <div class="qr-spectrum-desc">Heavy sweating, weakness, cold/pale/clammy skin, fast weak pulse, nausea.</div>
-              <div class="qr-spectrum-action">Cool environment, fluids, monitor closely</div>
-            </div>
-            <div class="qr-spectrum-divider"></div>
-            <div class="qr-spectrum-item">
-              <div class="qr-spectrum-label" style="color:var(--text)">Heat Stroke — above 104°F</div>
-              <div class="qr-spectrum-desc">Confusion, altered consciousness, may stop sweating. Hot red skin. This is an emergency.</div>
-              <div class="qr-spectrum-action" style="color:var(--royal);font-weight:700">Call 911. Cold water immersion immediately. Cool first, transport second.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WHEN TO CALL 911 -->
-        <div class="qr-card qr-red">
-          <div class="qr-card-header">
-            <div class="qr-icon" style="background:var(--royal-pale);color:var(--royal)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.1 6.1l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </div>
-            <div>
-              <div class="qr-card-title">When to Call 911</div>
-              <div class="qr-card-sub">Don't hesitate — call and let EMS decide</div>
-            </div>
-          </div>
-          <div class="qr-tags">
-            <span class="qr-tag blue">Suspected heat stroke</span>
-            <span class="qr-tag blue">Loss of consciousness</span>
-            <span class="qr-tag blue">Suspected spinal injury</span>
-            <span class="qr-tag blue">Cardiac arrest / no pulse</span>
-            <span class="qr-tag blue">Seizure</span>
-            <span class="qr-tag blue">Difficulty breathing</span>
-            <span class="qr-tag blue">Uncontrolled bleeding</span>
-            <span class="qr-tag blue">Suspected fracture with deformity</span>
-            <span class="qr-tag blue">Unequal pupils after head impact</span>
-          </div>
-          <div class="qr-rule">When calling: state your location first, then what happened.</div>
-        </div>
-
-        <!-- WOUND CARE -->
-        <div class="qr-card qr-blue">
-          <div class="qr-card-header">
-            <div class="qr-icon" style="background:var(--royal-pale);color:var(--royal)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
-            </div>
-            <div>
-              <div class="qr-card-title">Wound Care Steps</div>
-              <div class="qr-card-sub">For cuts and abrasions on the sideline</div>
-            </div>
-          </div>
-          <div class="qr-steps">
-            <div class="qr-step"><span class="qr-step-num">1</span><span>Gloves on before touching the wound</span></div>
-            <div class="qr-step"><span class="qr-step-num">2</span><span>Irrigate with saline or clean water — remove all debris</span></div>
-            <div class="qr-step"><span class="qr-step-num">3</span><span>Assess depth — if deep or won't stop bleeding, refer for stitches</span></div>
-            <div class="qr-step"><span class="qr-step-num">4</span><span>Apply appropriate dressing — larger pad for joints</span></div>
-            <div class="qr-step"><span class="qr-step-num">5</span><span>Secure with athletic tape or Coban — bridge across joint if needed</span></div>
-            <div class="qr-step"><span class="qr-step-num">6</span><span>Check circulation — compression should never feel tight or numb</span></div>
-          </div>
-        </div>
-
-        <!-- TAPING ANCHOR POINTS -->
-        <div class="qr-card qr-blue">
-          <div class="qr-card-header">
-            <div class="qr-icon" style="background:var(--royal-pale);color:var(--royal)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-            </div>
-            <div>
-              <div class="qr-card-title">Taping Quick Notes</div>
-              <div class="qr-card-sub">Key things to remember before you tape</div>
-            </div>
-          </div>
-          <div class="qr-steps">
-            <div class="qr-step"><span class="qr-step-num">1</span><span>Always apply pre-wrap first — protects the skin</span></div>
-            <div class="qr-step"><span class="qr-step-num">2</span><span>Ankle tape: start a few inches above the ankle bone, no wrinkles</span></div>
-            <div class="qr-step"><span class="qr-step-num">3</span><span>Wrist tape: anchor on mid-forearm, figure-8 around the wrist</span></div>
-            <div class="qr-step"><span class="qr-step-num">4</span><span>Buddy tape fingers: pad between fingers first, tape between joints — not over them</span></div>
-            <div class="qr-step"><span class="qr-step-num">5</span><span>After taping: check circulation — athlete should have normal feeling and color</span></div>
-          </div>
-        </div>
-
-        <!-- COMMON INJURY SIGNS -->
-        <div class="qr-card qr-blue">
-          <div class="qr-card-header">
-            <div class="qr-icon" style="background:var(--royal-pale);color:var(--royal)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            </div>
-            <div>
-              <div class="qr-card-title">Common Injury Signs at a Glance</div>
-              <div class="qr-card-sub">What you'll see and what to do first</div>
-            </div>
-          </div>
-          <div class="qr-table">
-            <div class="qr-table-row header">
-              <div>What You See</div><div>Likely Injury</div><div>Do This First</div>
-            </div>
-            <div class="qr-table-row">
-              <div>Ankle rolled inward, outer side swelling</div><div>Ankle sprain</div><div>PRICE, check if they can walk</div>
-            </div>
-            <div class="qr-table-row">
-              <div>Knee buckled, pop heard, rapid swelling</div><div>Possible ACL tear</div><div>No weight bearing, get the AT</div>
-            </div>
-            <div class="qr-table-row">
-              <div>Knee pain on inner side after contact</div><div>Possible MCL sprain</div><div>PRICE, get the AT</div>
-            </div>
-            <div class="qr-table-row">
-              <div>Knee locked, athlete can't straighten it</div><div>Possible meniscus tear</div><div>No weight bearing, get the AT</div>
-            </div>
-            <div class="qr-table-row">
-              <div>Finger jammed, middle knuckle swollen</div><div>Finger sprain or fracture</div><div>If crooked, refer. If not, buddy tape</div>
-            </div>
-            <div class="qr-table-row">
-              <div>Sudden calf pain, athlete can't push off foot</div><div>Possible Achilles rupture</div><div>No weight bearing, get the AT immediately</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-
+    
     <!-- LESSON PAGE -->
     <div id="page-lesson" class="page" style="padding-bottom:80px">
       <div id="lesson-content" style="padding-bottom:80px"></div>
@@ -1533,14 +1350,6 @@
         <div class="stat-card">
           <div class="stat-num" id="teacher-total-students">0</div>
           <div class="stat-label">Total Students</div>
-        </div>
-        <div class="stat-card yellow-top">
-          <div class="stat-num" id="teacher-active-now">0</div>
-          <div class="stat-label">Active Now</div>
-        </div>
-        <div class="stat-card green-top">
-          <div class="stat-num" id="teacher-avg-progress">0%</div>
-          <div class="stat-label">Class Average</div>
         </div>
       </div>
 

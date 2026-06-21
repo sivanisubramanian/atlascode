@@ -11,7 +11,9 @@ const firebaseConfig = {
 
 // Initialize Firebase (using global firebase object from CDN)
 
-// Initialize Firebase (using global firebase object from CDN)
+// Single source of truth for all module keys (mirrors MODULE_KEYS in index.html)
+const FIREBASE_MODULE_KEYS = ['terminology','ankle','knee','shoulder','wrist','taping','woundcare','concussions','allergic','heat','bloodborne','emergencyplan','modalities','asthma','diabetes','adolescent'];
+
 let auth1, db;
 
 function initFirebase() {
@@ -126,7 +128,7 @@ async function handleLogin() {
       if (studentDashboardLink) studentDashboardLink.style.display = userData.role === 'student' ? 'block' : 'none';
       if (teacherDashboardLink) teacherDashboardLink.style.display = userData.role === 'teacher' ? 'block' : 'none';
       const studentViewLink = document.getElementById('nav-student-view');
-      if (studentViewLink) studentViewLink.style.display = userData.role === 'teacher' ? 'inline' : 'none';
+      if (studentViewLink) studentViewLink.style.display = userData.role === 'teacher' ? 'inline-flex' : 'none';
 
       // Hide login page
       const loginPage = document.getElementById('page-login');
@@ -195,7 +197,7 @@ async function logout() {
     if (teacherDashboardLink) teacherDashboardLink.style.display = 'none';
     const studentViewLink = document.getElementById('nav-student-view');
     if (studentViewLink) studentViewLink.style.display = 'none';
-    if (typeof isTeacherPreviewMode !== 'undefined' && isTeacherPreviewMode && typeof exitStudentView === 'function') { isTeacherPreviewMode = false; const b = document.getElementById('teacher-preview-banner'); if(b) b.style.display='none'; }
+    if (typeof isTeacherPreviewMode !== 'undefined' && isTeacherPreviewMode) { isTeacherPreviewMode = false; }
     
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     if (loginPage) loginPage.style.display = 'flex';
@@ -227,15 +229,13 @@ async function initStudentDashboard() {
     const progressSnap = await progressRef.get();
     
     if (!progressSnap.exists) {
-      // Create initial progress document
+      // Create initial progress document with all module keys at 0
       console.log('Creating new progress document for user:', currentUser.uid);
-      await progressRef.set({
-        ankle: 0,
-        knee: 0,
-        terminology: 0,
-        userId: currentUser.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      const initialProgress = {};
+      FIREBASE_MODULE_KEYS.forEach(key => { initialProgress[key] = 0; });
+      initialProgress.userId = currentUser.uid;
+      initialProgress.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await progressRef.set(initialProgress);
       console.log('Progress document created');
     }
     
@@ -300,7 +300,7 @@ async function initTeacherDashboard() {
       try {
         // Get student's progress
         const progressSnap = await db.collection('student_progress').doc(userId).get();
-        const progress = progressSnap.exists ? progressSnap.data() : { ankle: 0, knee: 0, terminology: 0 };
+        const progress = progressSnap.exists ? progressSnap.data() : {};
         
         console.log(`📊 Student ${userData.email} progress:`, progress);
         
@@ -311,7 +311,8 @@ async function initTeacherDashboard() {
           progress: progress
         });
         
-        totalProgress += ((progress.ankle || 0) + (progress.knee || 0) + (progress.terminology || 0)) / 3;
+        const moduleSum = FIREBASE_MODULE_KEYS.reduce((sum, key) => sum + (progress[key] || 0), 0);
+        totalProgress += moduleSum / FIREBASE_MODULE_KEYS.length;
       } catch (progressError) {
         console.error(`❌ Error fetching progress for ${userId}:`, progressError);
         // Still add student but with zero progress
@@ -319,7 +320,7 @@ async function initTeacherDashboard() {
           id: userId,
           name: userData.name || userData.email,
           email: userData.email,
-          progress: { ankle: 0, knee: 0, terminology: 0 }
+          progress: {}
         });
       }
     }
@@ -359,12 +360,21 @@ async function initTeacherDashboard() {
       console.log('✅ Avg progress updated:', avgProgress);
     }
 
+    // Title lookup for chapter progress display (mirrors MODULES config in index.html)
+    const MODULE_TITLES = {
+      terminology: 'Medical Terms', ankle: 'Ankle Anatomy', knee: 'Knee Anatomy',
+      shoulder: 'Shoulder Anatomy', wrist: 'Wrist Anatomy',
+      taping: 'Basic Taping', woundcare: 'Basic Wound Care', concussions: 'Concussions',
+      allergic: 'Allergic Reactions', heat: 'Heat-Related Health Problems',
+      bloodborne: 'Bloodborne Pathogens', emergencyplan: 'Emergency Plan', modalities: 'Modalities',
+      asthma: 'Exercise-Induced Asthma', diabetes: 'The Athlete with Diabetes',
+      adolescent: 'Special Medical Concerns for Adolescent Athletes',
+    };
+
     // Populate student list with cards
     const studentListHTML = students.map(s => {
-      const anklePercent = s.progress.ankle || 0;
-      const kneePercent = s.progress.knee || 0;
-      const terminologyPercent = s.progress.terminology || 0;
-      const overallPercent = Math.round((anklePercent + kneePercent + terminologyPercent) / 3);
+      const moduleSum = FIREBASE_MODULE_KEYS.reduce((sum, key) => sum + (s.progress[key] || 0), 0);
+      const overallPercent = Math.round(moduleSum / FIREBASE_MODULE_KEYS.length);
       
       // Determine status color
       let statusColor = '#e03131'; // red
@@ -381,6 +391,21 @@ async function initTeacherDashboard() {
       }
       
       const studentName = s.name && s.name !== 'undefined' ? s.name : s.email.split('@')[0];
+
+      const chapterItemsHTML = FIREBASE_MODULE_KEYS.map(key => {
+        const pct = s.progress[key] || 0;
+        const title = MODULE_TITLES[key] || key;
+        return `
+          <div class="teacher-chapter-item">
+            <div class="teacher-chapter-header">
+              <span class="teacher-chapter-name">${title}</span>
+              <span class="teacher-chapter-percent">${pct}%</span>
+            </div>
+            <div class="teacher-mini-bar">
+              <div class="teacher-progress-fill" style="width: ${pct}%;"></div>
+            </div>
+          </div>`;
+      }).join('');
       
       return `
       <div class="teacher-student-card">
@@ -404,36 +429,7 @@ async function initTeacherDashboard() {
         
         <div class="teacher-chapter-title">Chapter Progress</div>
         
-        <div>
-          <div class="teacher-chapter-item">
-            <div class="teacher-chapter-header">
-              <span class="teacher-chapter-name">Ankle Anatomy</span>
-              <span class="teacher-chapter-percent">${anklePercent}%</span>
-            </div>
-            <div class="teacher-mini-bar">
-              <div class="teacher-progress-fill" style="width: ${anklePercent}%;"></div>
-            </div>
-          </div>
-          
-          <div class="teacher-chapter-item">
-            <div class="teacher-chapter-header">
-              <span class="teacher-chapter-name">Knee Anatomy</span>
-              <span class="teacher-chapter-percent">${kneePercent}%</span>
-            </div>
-            <div class="teacher-mini-bar">
-              <div class="teacher-progress-fill" style="width: ${kneePercent}%;"></div>
-            </div>
-          </div>
-          
-          <div class="teacher-chapter-item">
-            <div class="teacher-chapter-header">
-              <span class="teacher-chapter-name">Medical Terms</span>
-              <span class="teacher-chapter-percent">${terminologyPercent}%</span>
-            </div>
-            <div class="teacher-mini-bar">
-              <div class="teacher-progress-fill" style="width: ${terminologyPercent}%;"></div>
-            </div>
-          </div>
+        <div>${chapterItemsHTML}
         </div>
       </div>
     `;
@@ -448,41 +444,36 @@ async function initTeacherDashboard() {
     }
 
     // Populate chapter details
-    const chaptersHTML = `
+    const CHAPTER_DESCRIPTIONS = {
+      terminology: 'Essential medical terms used in athletic training.',
+      ankle: 'The most common sports injury. Ligaments, sprains, and diagnosis.',
+      knee: 'Complex joint with ACL, MCL, meniscus. Largest joint in the body.',
+      shoulder: 'Ball-and-socket joint anatomy and common injuries.',
+      wrist: 'Wrist anatomy and common athletic injuries.',
+      taping: 'Basic taping techniques for common injuries.',
+      woundcare: 'Wound assessment, cleaning, and basic care.',
+      concussions: 'Recognition, response, and return-to-play protocols.',
+      allergic: 'Recognizing and responding to allergic reactions.',
+      heat: 'Heat illness prevention and emergency response.',
+      bloodborne: 'Bloodborne pathogen safety and protocols.',
+      emergencyplan: 'Emergency action plans for athletic venues.',
+      modalities: 'Therapeutic modalities used in athletic training.',
+      asthma: 'Exercise-induced asthma recognition and management.',
+      diabetes: 'Supporting athletes managing diabetes.',
+      adolescent: 'Special medical considerations for adolescent athletes.',
+    };
+    const chaptersHTML = FIREBASE_MODULE_KEYS.map((key, i) => `
       <div class="skill-card">
         <div class="skill-card-header">
           <div class="skill-icon" style="background:#e8edfb">📍</div>
-          <span class="badge level2">Chapter 1</span>
+          <span class="badge level2">Chapter ${i + 1}</span>
         </div>
-        <h3>Ankle Anatomy</h3>
-        <p>The most common sports injury. Students learn ligaments, sprains, and diagnosis.</p>
+        <h3>${MODULE_TITLES[key] || key}</h3>
+        <p>${CHAPTER_DESCRIPTIONS[key] || ''}</p>
         <div class="skill-meta">
           <span>${students.length} students in class</span>
         </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#e8edfb">🦵</div>
-          <span class="badge level2">Chapter 2</span>
-        </div>
-        <h3>Knee Anatomy</h3>
-        <p>Complex joint with ACL, MCL, meniscus. Largest joint in the body.</p>
-        <div class="skill-meta">
-          <span>${students.length} students in class</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-card-header">
-          <div class="skill-icon" style="background:#e8edfb">📚</div>
-          <span class="badge level2">Chapter 3</span>
-        </div>
-        <h3>Medical Terminology</h3>
-        <p>Essential medical terms used in athletic training. Build your professional vocabulary.</p>
-        <div class="skill-meta">
-          <span>${students.length} students in class</span>
-        </div>
-      </div>
-    `;
+      </div>`).join('');
 
     const chaptersEl = document.getElementById('teacher-chapters');
     if (chaptersEl) {
@@ -577,27 +568,16 @@ async function loadStudentProgress() {
         progress.completed.clear();
         progress.inProgress.clear();
         
-        // Mark completed modules (those at 100%)
-        if (progressData.ankle === 100) {
-          progress.completed.add('ankle');
-          console.log('✓ Ankle marked as complete');
-        } else if (progressData.ankle > 0) {
-          progress.inProgress.add('ankle');
-        }
-        
-        if (progressData.knee === 100) {
-          progress.completed.add('knee');
-          console.log('✓ Knee marked as complete');
-        } else if (progressData.knee > 0) {
-          progress.inProgress.add('knee');
-        }
-        
-        if (progressData.terminology === 100) {
-          progress.completed.add('terminology');
-          console.log('✓ Terminology marked as complete');
-        } else if (progressData.terminology > 0) {
-          progress.inProgress.add('terminology');
-        }
+        // Mark completed/in-progress modules based on percentage
+        FIREBASE_MODULE_KEYS.forEach(key => {
+          const pct = progressData[key];
+          if (pct === 100) {
+            progress.completed.add(key);
+            console.log(`✓ ${key} marked as complete`);
+          } else if (pct > 0) {
+            progress.inProgress.add(key);
+          }
+        });
         
         // Update dashboard stats
         if (typeof updateDashboardStats === 'function') {
@@ -624,88 +604,35 @@ async function loadStudentProgress() {
 // Update progress bar UI from database
 function updateModuleCardUIfromDB(progressData) {
   if (!progressData) return;
-  
-  // Update ankle progress bar
-  if (progressData.ankle === 100) {
-    document.querySelectorAll('[onclick*="ankle"]').forEach(el => {
-      const fillEl = el.querySelector('.mini-fill');
-      if (fillEl) {
-        fillEl.style.width = '100%';
-        fillEl.style.background = 'var(--green)';
-      }
-    });
-    const ankleDot = document.querySelector('[onclick*="ankle"] .sidebar-dot');
-    if (ankleDot) ankleDot.style.background = 'var(--green)';
-  }
-  
-  // Update knee progress bar
-  if (progressData.knee === 100) {
-    document.querySelectorAll('[onclick*="knee"]').forEach(el => {
-      const fillEl = el.querySelector('.mini-fill');
-      if (fillEl) {
-        fillEl.style.width = '100%';
-        fillEl.style.background = 'var(--green)';
-      }
-    });
-    const kneeDot = document.querySelector('[onclick*="knee"] .sidebar-dot');
-    if (kneeDot) kneeDot.style.background = 'var(--green)';
-  }
-  
-  // Update terminology progress bar
-  if (progressData.terminology === 100) {
-    document.querySelectorAll('[onclick*="terminology"]').forEach(el => {
-      const fillEl = el.querySelector('.mini-fill');
-      if (fillEl) {
-        fillEl.style.width = '100%';
-        fillEl.style.background = 'var(--green)';
-      }
-    });
-    const terminologyDot = document.querySelector('[onclick*="terminology"] .sidebar-dot');
-    if (terminologyDot) terminologyDot.style.background = 'var(--green)';
-  }
+
+  FIREBASE_MODULE_KEYS.forEach(key => {
+    if (progressData[key] === 100) {
+      document.querySelectorAll(`[data-module-key="${key}"]`).forEach(el => {
+        const fillEl = el.querySelector('.mini-fill');
+        if (fillEl) {
+          fillEl.style.width = '100%';
+          fillEl.style.background = 'var(--green)';
+        }
+      });
+      const dot = document.querySelector(`[data-module-key="${key}"] .sidebar-dot`);
+      if (dot) dot.style.background = 'var(--green)';
+    }
+  });
 }
 
 // Update all progress bars with percentages
 function updateAllProgressBars(progressData) {
   console.log('updateAllProgressBars called with:', progressData);
-  
   if (!progressData) return;
-  
-  // Update ankle progress
-  if (progressData.ankle !== undefined) {
-    document.querySelectorAll('[onclick*="ankle"] .mini-fill').forEach(el => {
-      el.style.width = progressData.ankle + '%';
-      if (progressData.ankle === 100) {
-        el.style.background = 'var(--green)';
-      } else if (progressData.ankle > 0) {
-        el.style.background = 'var(--royal)';
-      }
+
+  FIREBASE_MODULE_KEYS.forEach(key => {
+    const pct = progressData[key];
+    if (pct === undefined) return;
+    document.querySelectorAll(`[data-module-key="${key}"] .mini-fill`).forEach(el => {
+      el.style.width = pct + '%';
+      el.style.background = pct === 100 ? 'var(--green)' : (pct > 0 ? 'var(--royal)' : '');
     });
-  }
-  
-  // Update knee progress
-  if (progressData.knee !== undefined) {
-    document.querySelectorAll('[onclick*="knee"] .mini-fill').forEach(el => {
-      el.style.width = progressData.knee + '%';
-      if (progressData.knee === 100) {
-        el.style.background = 'var(--green)';
-      } else if (progressData.knee > 0) {
-        el.style.background = 'var(--royal)';
-      }
-    });
-  }
-  
-  // Update terminology progress
-  if (progressData.terminology !== undefined) {
-    document.querySelectorAll('[onclick*="terminology"] .mini-fill').forEach(el => {
-      el.style.width = progressData.terminology + '%';
-      if (progressData.terminology === 100) {
-        el.style.background = 'var(--green)';
-      } else if (progressData.terminology > 0) {
-        el.style.background = 'var(--royal)';
-      }
-    });
-  }
+  });
 }
 
 // Make functions globally accessible

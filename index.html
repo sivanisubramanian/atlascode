@@ -62,7 +62,6 @@
     display: flex;
     gap: 4px;
     list-style: none;
-    align-items: center;
   }
   .nav-links a {
     color: rgba(255,255,255,0.7);
@@ -333,8 +332,8 @@
     text-transform: uppercase;
   }
   .badge.level1 { background: #e8f5e9; color: #2f9e44; }
-  .badge.level2 { background: #e8edfb; color: var(--royal); }
-  .badge.level3 { background: #fff8e1; color: #f59f00; }
+  .badge.level2 { background: #e8f5e9; color: #2f9e44; }
+  .badge.level3 { background: #e8f5e9; color: #2f9e44; }
 
   .skill-card h3 {
     font-family: 'Syne', sans-serif;
@@ -1150,18 +1149,13 @@
   <ul class="nav-links" id="nav-main">
     <li><a href="#" class="active" onclick="showPage('dashboard',this);return false;" id="nav-student-dashboard">Dashboard</a></li>
     <li><a href="#" onclick="showPage('teacher',this);return false;" id="nav-teacher-dashboard" style="display:none;">Teacher Dashboard</a></li>
-    <li><a href="#" onclick="enterStudentView();return false;" id="nav-student-view" style="display:none;">Student View</a></li>
+    <li><a href="#" onclick="enterStudentView();return false;" id="nav-student-view" style="display:none;align-items:center;">Student View</a></li>
     
   <ul class="nav-links" id="nav-auth" style="gap:12px;">
     <li><span id="user-name-display" style="color:rgba(255,255,255,0.9);padding:7px 14px;border-radius:6px;"></span></li>
     <li><button id="logout-btn" class="nav-cta" style="padding:8px 16px;font-size:0.84rem;">Logout</button></li>
   </ul>
 </nav>
-
-<div id="teacher-preview-banner" style="display:none;position:fixed;top:64px;left:0;right:0;z-index:90;background:linear-gradient(90deg,#7c3aed,#1a3db5);color:#fff;align-items:center;justify-content:space-between;padding:10px 40px;font-size:0.82rem;font-weight:600;box-shadow:0 2px 12px rgba(124,58,237,0.25);">
-  <span> <strong>Preview Mode</strong> — You are viewing the student experience. No progress will be saved.</span>
-  <button onclick="exitStudentView()" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.4);color:#fff;padding:6px 16px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;">← Exit Student View</button>
-</div>
 
 <div class="app">
   <!-- LOGIN PAGE -->
@@ -1203,36 +1197,93 @@
   </div>
   <aside class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-label">Level 1 — Foundational</div>
-      <div class="sidebar-item active" onclick="startLesson('ankle')">
+      <div class="sidebar-label">Level 1 — Foundations of Sports Medicine</div>
+      <div class="sidebar-item active" onclick="startLesson('terminology')" data-module-key="terminology">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Common Medical Terminology
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('ankle')" data-module-key="ankle">
         <div class="sidebar-dot" style="background:var(--royal)"></div>
         Ankle Anatomy
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-      <div class="sidebar-item" onclick="startLesson('knee')">
+      <div class="sidebar-item" onclick="startLesson('knee')" data-module-key="knee">
         <div class="sidebar-dot" style="background:var(--royal)"></div>
         Knee Anatomy
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-      <div class="sidebar-item" onclick="startLesson('terminology')">
+      <div class="sidebar-item" onclick="startLesson('shoulder')" data-module-key="shoulder">
         <div class="sidebar-dot" style="background:var(--royal)"></div>
-        Medical Terminology
+        Shoulder Anatomy
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('wrist')" data-module-key="wrist">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Wrist Anatomy
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
     </div>
     <div class="sidebar-section" style="margin-top:14px">
-      <div class="sidebar-label">Level 2 — Basic Skills</div>
-      <div class="sidebar-item" style="opacity:0.4;pointer-events:none;font-style:italic">
-        <div class="sidebar-dot" style="background:var(--border)"></div>
-        Coming Soon
+      <div class="sidebar-label">Level 2 — Essential Clinical Skills</div>
+      <div class="sidebar-item" onclick="startLesson('taping')" data-module-key="taping">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Basic Taping
       </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('woundcare')" data-module-key="woundcare">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Basic Wound Care
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('concussions')" data-module-key="concussions">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Concussions
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('allergic')" data-module-key="allergic">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Allergic Reactions
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('heat')" data-module-key="heat">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Heat-Related Health Problems
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
     </div>
     <div class="sidebar-section" style="margin-top:14px">
-      <div class="sidebar-label">Level 3 — Varsity ATs</div>
-      <div class="sidebar-item" style="opacity:0.4;pointer-events:none;font-style:italic">
-        <div class="sidebar-dot" style="background:var(--border)"></div>
-        Coming Soon
+      <div class="sidebar-label">Level 3 — Advanced Athlete Care</div>
+      <div class="sidebar-item" onclick="startLesson('bloodborne')" data-module-key="bloodborne">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Bloodborne Pathogens
       </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('emergencyplan')" data-module-key="emergencyplan">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Emergency Plan
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('modalities')" data-module-key="modalities">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Modalities
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('asthma')" data-module-key="asthma">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Exercise-Induced Asthma
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('diabetes')" data-module-key="diabetes">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        The Athlete with Diabetes
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      <div class="sidebar-item" onclick="startLesson('adolescent')" data-module-key="adolescent">
+        <div class="sidebar-dot" style="background:var(--royal)"></div>
+        Special Medical Concerns for Adolescent Athletes
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
     </div>
   </aside>
 
@@ -1252,7 +1303,7 @@
           <div class="stat-label">Skills in progress</div>
         </div>
         <div class="stat-card yellow-top">
-          <div class="stat-num" id="stat-remaining">3</div>
+          <div class="stat-num" id="stat-remaining">16</div>
           <div class="stat-label">Skills remaining</div>
         </div>
         <div class="stat-card green-top">
@@ -1261,36 +1312,10 @@
         </div>
       </div>
 
-      <div class="section-title">Level 1 — Foundational Information for Club Members</div>
+      <div class="section-title">Level 1 — Foundations of Sports Medicine</div>
       <div class="skill-grid">
 
-        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer">
-          <div class="skill-card-header">
-            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div>
-            <span class="badge level1">Level 1</span>
-          </div>
-          <h3>Ankle Anatomy</h3>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">2 sections</div>
-            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
-          </div>
-          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
-        </div>
-
-        <div class="skill-card" onclick="startLesson('knee')" style="cursor:pointer">
-          <div class="skill-card-header">
-            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div>
-            <span class="badge level1">Level 1</span>
-          </div>
-          <h3>Knee Anatomy</h3>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">6 sections</div>
-            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
-          </div>
-          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
-        </div>
-
-        <div class="skill-card" onclick="startLesson('terminology')" style="cursor:pointer">
+        <div class="skill-card" onclick="startLesson('terminology')" style="cursor:pointer" data-module-key="terminology">
           <div class="skill-card-header">
             <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
             <span class="badge level1">Level 1</span>
@@ -1303,30 +1328,211 @@
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
         </div>
 
+        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer" data-module-key="ankle">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div>
+            <span class="badge level1">Level 1</span>
+          </div>
+          <h3>Ankle Anatomy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">2 sections</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('knee')" style="cursor:pointer" data-module-key="knee">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div>
+            <span class="badge level1">Level 1</span>
+          </div>
+          <h3>Knee Anatomy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">6 sections</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('shoulder')" style="cursor:pointer" data-module-key="shoulder">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level1">Level 1</span>
+          </div>
+          <h3>Shoulder Anatomy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('wrist')" style="cursor:pointer" data-module-key="wrist">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level1">Level 1</span>
+          </div>
+          <h3>Wrist Anatomy</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
       </div>
 
-      <div class="section-title">Level 2 — Basic Skills for JV ATs</div>
+      <div class="section-title">Level 2 — Essential Clinical Skills</div>
       <div class="skill-grid">
-        <div class="skill-card" style="opacity:0.45;pointer-events:none;border-style:dashed">
+
+        <div class="skill-card" onclick="startLesson('taping')" style="cursor:pointer" data-module-key="taping">
           <div class="skill-card-header">
-            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
             <span class="badge level2">Level 2</span>
           </div>
-          <h3>Coming Soon</h3>
-          <p>Level 2 skills for JV ATs will be added here.</p>
+          <h3>Basic Taping</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
         </div>
+
+        <div class="skill-card" onclick="startLesson('woundcare')" style="cursor:pointer" data-module-key="woundcare">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level2">Level 2</span>
+          </div>
+          <h3>Basic Wound Care</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('concussions')" style="cursor:pointer" data-module-key="concussions">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level2">Level 2</span>
+          </div>
+          <h3>Concussions</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('allergic')" style="cursor:pointer" data-module-key="allergic">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level2">Level 2</span>
+          </div>
+          <h3>Allergic Reactions</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('heat')" style="cursor:pointer" data-module-key="heat">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level2">Level 2</span>
+          </div>
+          <h3>Heat-Related Health Problems</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
       </div>
 
-      <div class="section-title">Level 3 — Advanced Information for Varsity ATs</div>
+      <div class="section-title">Level 3 — Advanced Athlete Care</div>
       <div class="skill-grid">
-        <div class="skill-card" style="opacity:0.45;pointer-events:none;border-style:dashed">
+
+        <div class="skill-card" onclick="startLesson('bloodborne')" style="cursor:pointer" data-module-key="bloodborne">
           <div class="skill-card-header">
-            <div class="skill-icon" style="background:#fff8e1;color:#f59f00"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
             <span class="badge level3">Level 3</span>
           </div>
-          <h3>Coming Soon</h3>
-          <p>Level 3 skills for Varsity ATs will be added here.</p>
+          <h3>Bloodborne Pathogens</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
         </div>
+
+        <div class="skill-card" onclick="startLesson('emergencyplan')" style="cursor:pointer" data-module-key="emergencyplan">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level3">Level 3</span>
+          </div>
+          <h3>Emergency Plan</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('modalities')" style="cursor:pointer" data-module-key="modalities">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level3">Level 3</span>
+          </div>
+          <h3>Modalities</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('asthma')" style="cursor:pointer" data-module-key="asthma">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level3">Level 3</span>
+          </div>
+          <h3>Exercise-Induced Asthma</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('diabetes')" style="cursor:pointer" data-module-key="diabetes">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level3">Level 3</span>
+          </div>
+          <h3>The Athlete with Diabetes</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="skill-card" onclick="startLesson('adolescent')" style="cursor:pointer" data-module-key="adolescent">
+          <div class="skill-card-header">
+            <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div>
+            <span class="badge level3">Level 3</span>
+          </div>
+          <h3>Special Medical Concerns for Adolescent Athletes</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
+          </div>
+          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
+        </div>
+
       </div>
       <div style="text-align:center;padding:32px 0 8px;font-size:0.75rem;color:var(--muted);border-top:1px solid var(--border);margin-top:24px;">&copy; 2026 Sivani Subramanian. All rights reserved.</div>
     </div>
@@ -1354,44 +1560,39 @@
       </div>
       <div class="stats-row">
         <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Skills in progress</div></div>
-        <div class="stat-card yellow-top"><div class="stat-num">3</div><div class="stat-label">Skills remaining</div></div>
+        <div class="stat-card yellow-top"><div class="stat-num">16</div><div class="stat-label">Skills remaining</div></div>
         <div class="stat-card green-top"><div class="stat-num">0</div><div class="stat-label">Skills completed</div></div>
       </div>
-      <div class="section-title">Level 1 — Foundational Information for Club Members</div>
+      <div class="section-title">Level 1 — Foundations of Sports Medicine</div>
       <div class="skill-grid">
-        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer">
-          <div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div><span class="badge level1">Level 1</span></div>
-          <h3>Ankle Anatomy</h3>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">2 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div>
-          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
-        </div>
-        <div class="skill-card" onclick="startLesson('knee')" style="cursor:pointer">
-          <div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div><span class="badge level1">Level 1</span></div>
-          <h3>Knee Anatomy</h3>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">6 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div>
-          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
-        </div>
-        <div class="skill-card" onclick="startLesson('terminology')" style="cursor:pointer">
-          <div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><span class="badge level1">Level 1</span></div>
-          <h3>Common Medical Terminology</h3>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div>
-          <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
-        </div>
+        <div class="skill-card" onclick="startLesson('terminology')" style="cursor:pointer" data-module-key="terminology"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><span class="badge level1">Level 1</span></div><h3>Common Medical Terminology</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer" data-module-key="ankle"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div><span class="badge level1">Level 1</span></div><h3>Ankle Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">2 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('knee')" style="cursor:pointer" data-module-key="knee"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8a3.5 3.5 0 0 0 7 0V5a1 1 0 0 0-1-1h-5a1 1 0 0 0-1 1v3z"/><path d="M8 11.5V15a5 5 0 0 0 10 0v-1"/><circle cx="18" cy="13.5" r="1.5"/></svg></div><span class="badge level1">Level 1</span></div><h3>Knee Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">6 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('shoulder')" style="cursor:pointer" data-module-key="shoulder"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level1">Level 1</span></div><h3>Shoulder Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('wrist')" style="cursor:pointer" data-module-key="wrist"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level1">Level 1</span></div><h3>Wrist Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
       </div>
-      <div class="section-title">Level 2 — Basic Skills for JV ATs</div>
+      <div class="section-title">Level 2 — Essential Clinical Skills</div>
       <div class="skill-grid">
-        <div class="skill-card" style="opacity:0.45;pointer-events:none;border-style:dashed"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span class="badge level2">Level 2</span></div><h3>Coming Soon</h3><p>Level 2 skills for JV ATs will be added here.</p></div>
+        <div class="skill-card" onclick="startLesson('taping')" style="cursor:pointer" data-module-key="taping"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Taping</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('woundcare')" style="cursor:pointer" data-module-key="woundcare"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Wound Care</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('concussions')" style="cursor:pointer" data-module-key="concussions"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level2">Level 2</span></div><h3>Concussions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('allergic')" style="cursor:pointer" data-module-key="allergic"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level2">Level 2</span></div><h3>Allergic Reactions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('heat')" style="cursor:pointer" data-module-key="heat"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level2">Level 2</span></div><h3>Heat-Related Health Problems</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
       </div>
-      <div class="section-title">Level 3 — Advanced Information for Varsity ATs</div>
+      <div class="section-title">Level 3 — Advanced Athlete Care</div>
       <div class="skill-grid">
-        <div class="skill-card" style="opacity:0.45;pointer-events:none;border-style:dashed"><div class="skill-card-header"><div class="skill-icon" style="background:#fff8e1;color:#f59f00"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span class="badge level3">Level 3</span></div><h3>Coming Soon</h3><p>Level 3 skills for Varsity ATs will be added here.</p></div>
+        <div class="skill-card" onclick="startLesson('bloodborne')" style="cursor:pointer" data-module-key="bloodborne"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level3">Level 3</span></div><h3>Bloodborne Pathogens</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('emergencyplan')" style="cursor:pointer" data-module-key="emergencyplan"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level3">Level 3</span></div><h3>Emergency Plan</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('modalities')" style="cursor:pointer" data-module-key="modalities"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level3">Level 3</span></div><h3>Modalities</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('asthma')" style="cursor:pointer" data-module-key="asthma"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level3">Level 3</span></div><h3>Exercise-Induced Asthma</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('diabetes')" style="cursor:pointer" data-module-key="diabetes"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level3">Level 3</span></div><h3>The Athlete with Diabetes</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('adolescent')" style="cursor:pointer" data-module-key="adolescent"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg></div><span class="badge level3">Level 3</span></div><h3>Special Medical Concerns for Adolescent Athletes</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
       </div>
       <div style="text-align:center;padding:32px 0 8px;font-size:0.75rem;color:var(--muted);border-top:1px solid var(--border);margin-top:24px;">&copy; 2026 Sivani Subramanian. All rights reserved.</div>
     </div>
 
     <!-- TEACHER VIEW PAGE -->
-    <div id="page-teacher" class="page">
-
+    <div id="page-teacher" class="page" >
       <div class="dashboard-header">
         <div class="greeting">Welcome back, Teacher</div>
         <h1>Student Progress <span>Tracker</span></h1>
@@ -1465,8 +1666,6 @@ let isTeacherPreviewMode = false;
 
 function enterStudentView() {
   isTeacherPreviewMode = true;
-  const banner = document.getElementById('teacher-preview-banner');
-  if (banner) { banner.style.display = 'flex'; }
   const sidebar = document.querySelector('.sidebar');
   if (sidebar) sidebar.style.display = '';
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1479,8 +1678,6 @@ function enterStudentView() {
 
 function exitStudentView() {
   isTeacherPreviewMode = false;
-  const banner = document.getElementById('teacher-preview-banner');
-  if (banner) { banner.style.display = 'none'; }
   showPage('teacher', document.getElementById('nav-teacher-dashboard'));
 }
 
@@ -1489,6 +1686,12 @@ function showPage(name, linkEl) {
   if (name !== 'login' && !currentUser) {
     console.warn('User not authenticated');
     return;
+  }
+
+  // Exiting teacher preview mode: any navigation away from the lesson/student-preview
+  // pages means the teacher is done previewing as a student.
+  if (isTeacherPreviewMode && name !== 'lesson' && name !== 'student-preview') {
+    isTeacherPreviewMode = false;
   }
 
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1769,8 +1972,11 @@ function handleMatchClick(type, value, el) {
 const progress = {
   inProgress: new Set(),
   completed: new Set(),
-  totalModules: 3 // ankle, knee, terminology
+  totalModules: 16 // see MODULE_KEYS below for full list
 };
+
+// Single source of truth for all module keys (used by progress bar sync, etc.)
+const MODULE_KEYS = ['terminology','ankle','knee','shoulder','wrist','taping','woundcare','concussions','allergic','heat','bloodborne','emergencyplan','modalities','asthma','diabetes','adolescent'];
 
 function updateDashboardStats() {
   const inProg = progress.inProgress.size;
@@ -1806,122 +2012,48 @@ function markModuleComplete(key) {
 
 function updateModuleCardUI(key) {
   // Turn progress bars green for completed modules
-  document.querySelectorAll('.mini-fill').forEach(el => {
-    const card = el.closest('.skill-card');
-    if (card && card.getAttribute('onclick') && card.getAttribute('onclick').includes(key)) {
-      el.style.width = '100%';
-      el.style.background = 'var(--green)';
-    }
+  document.querySelectorAll(`[data-module-key="${key}"] .mini-fill`).forEach(el => {
+    el.style.width = '100%';
+    el.style.background = 'var(--green)';
   });
   // Update sidebar dot
-  document.querySelectorAll('.sidebar-item').forEach(el => {
-    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(key)) {
-      const dot = el.querySelector('.sidebar-dot');
-      if (dot) dot.style.background = 'var(--green)';
-    }
+  document.querySelectorAll(`.sidebar-item[data-module-key="${key}"]`).forEach(el => {
+    const dot = el.querySelector('.sidebar-dot');
+    if (dot) dot.style.background = 'var(--green)';
   });
 }
 
 // Update all progress bars from progress data
 function updateAllProgressBars(progressData) {
+  if (!progressData) return;
   console.log('Updating all progress bars with:', progressData);
-  
-  // Update ankle progress
-  if (progressData && progressData.ankle !== undefined) {
-    // Update skill card progress bar
-    document.querySelectorAll('[onclick*="ankle"] .mini-fill').forEach(el => {
-      el.style.width = progressData.ankle + '%';
-      if (progressData.ankle === 100) {
-        el.style.background = 'var(--green)';
-      } else if (progressData.ankle > 0) {
-        el.style.background = 'var(--royal)';
-      }
+
+  MODULE_KEYS.forEach(key => {
+    const pct = progressData[key];
+    if (pct === undefined) return;
+
+    // Update dashboard/preview skill card mini-progress bar
+    document.querySelectorAll(`[data-module-key="${key}"] .mini-fill`).forEach(el => {
+      el.style.width = pct + '%';
+      el.style.background = pct === 100 ? 'var(--green)' : (pct > 0 ? 'var(--royal)' : '');
     });
-    // Update sidebar progress bar and dot
-    document.querySelectorAll('[onclick*="ankle"]').forEach(el => {
-      // Update dot
+
+    // Update sidebar dot + progress bar (sidebar items use data-module-key too)
+    document.querySelectorAll(`.sidebar-item[data-module-key="${key}"]`).forEach(el => {
       const dot = el.querySelector('.sidebar-dot');
-      if (dot && progressData.ankle === 100) {
-        dot.style.background = 'var(--green)';
-      }
-      // Update progress bar
+      if (dot && pct === 100) dot.style.background = 'var(--green)';
       const progressBar = el.nextElementSibling;
       if (progressBar && progressBar.classList.contains('progress-bar')) {
         const fill = progressBar.querySelector('.progress-fill');
         if (fill) {
-          fill.style.width = progressData.ankle + '%';
-          if (progressData.ankle === 100) {
-            fill.style.background = 'var(--green)';
-          }
+          fill.style.width = pct + '%';
+          if (pct === 100) fill.style.background = 'var(--green)';
         }
       }
     });
-  }
-  
-  // Update knee progress
-  if (progressData && progressData.knee !== undefined) {
-    // Update skill card progress bar
-    document.querySelectorAll('[onclick*="knee"] .mini-fill').forEach(el => {
-      el.style.width = progressData.knee + '%';
-      if (progressData.knee === 100) {
-        el.style.background = 'var(--green)';
-      } else if (progressData.knee > 0) {
-        el.style.background = 'var(--royal)';
-      }
-    });
-    // Update sidebar progress bar and dot
-    document.querySelectorAll('[onclick*="knee"]').forEach(el => {
-      // Update dot
-      const dot = el.querySelector('.sidebar-dot');
-      if (dot && progressData.knee === 100) {
-        dot.style.background = 'var(--green)';
-      }
-      // Update progress bar
-      const progressBar = el.nextElementSibling;
-      if (progressBar && progressBar.classList.contains('progress-bar')) {
-        const fill = progressBar.querySelector('.progress-fill');
-        if (fill) {
-          fill.style.width = progressData.knee + '%';
-          if (progressData.knee === 100) {
-            fill.style.background = 'var(--green)';
-          }
-        }
-      }
-    });
-  }
-  
-  // Update terminology progress
-  if (progressData && progressData.terminology !== undefined) {
-    // Update skill card progress bar
-    document.querySelectorAll('[onclick*="terminology"] .mini-fill').forEach(el => {
-      el.style.width = progressData.terminology + '%';
-      if (progressData.terminology === 100) {
-        el.style.background = 'var(--green)';
-      } else if (progressData.terminology > 0) {
-        el.style.background = 'var(--royal)';
-      }
-    });
-    // Update sidebar progress bar and dot
-    document.querySelectorAll('[onclick*="terminology"]').forEach(el => {
-      // Update dot
-      const dot = el.querySelector('.sidebar-dot');
-      if (dot && progressData.terminology === 100) {
-        dot.style.background = 'var(--green)';
-      }
-      // Update progress bar
-      const progressBar = el.nextElementSibling;
-      if (progressBar && progressBar.classList.contains('progress-bar')) {
-        const fill = progressBar.querySelector('.progress-fill');
-        if (fill) {
-          fill.style.width = progressData.terminology + '%';
-          if (progressData.terminology === 100) {
-            fill.style.background = 'var(--green)';
-          }
-        }
-      }
-    });
-  }
+  });
 }
+
 
 
 const lessonData = {
@@ -2536,6 +2668,253 @@ const lessonData = {
           </div>`
       },
 
+    ]
+  },
+  shoulder: {
+    title: 'Shoulder Anatomy',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Shoulder Anatomy</span>
+            </div>
+            <h1><span>Shoulder Anatomy</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  wrist: {
+    title: 'Wrist Anatomy',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Wrist Anatomy</span>
+            </div>
+            <h1><span>Wrist Anatomy</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  taping: {
+    title: 'Basic Taping',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Basic Taping</span>
+            </div>
+            <h1><span>Basic Taping</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  woundcare: {
+    title: 'Basic Wound Care',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Basic Wound Care</span>
+            </div>
+            <h1><span>Basic Wound Care</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  concussions: {
+    title: 'Concussions',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Concussions</span>
+            </div>
+            <h1><span>Concussions</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  allergic: {
+    title: 'Allergic Reactions',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Allergic Reactions</span>
+            </div>
+            <h1><span>Allergic Reactions</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  heat: {
+    title: 'Heat-Related Health Problems',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Heat-Related Health Problems</span>
+            </div>
+            <h1><span>Heat-Related Health Problems</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  bloodborne: {
+    title: 'Bloodborne Pathogens',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Bloodborne Pathogens</span>
+            </div>
+            <h1><span>Bloodborne Pathogens</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  emergencyplan: {
+    title: 'Emergency Plan',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Emergency Plan</span>
+            </div>
+            <h1><span>Emergency Plan</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  modalities: {
+    title: 'Modalities',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Modalities</span>
+            </div>
+            <h1><span>Modalities</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  asthma: {
+    title: 'Exercise-Induced Asthma',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Exercise-Induced Asthma</span>
+            </div>
+            <h1><span>Exercise-Induced Asthma</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  diabetes: {
+    title: 'The Athlete with Diabetes',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">The Athlete with Diabetes</span>
+            </div>
+            <h1><span>The Athlete with Diabetes</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
+    ]
+  },
+  adolescent: {
+    title: 'Special Medical Concerns for Adolescent Athletes',
+    pages: [
+      {
+        type: 'intro',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header">
+              <span class="lesson-step-tag">Special Medical Concerns for Adolescent Athletes</span>
+            </div>
+            <h1><span>Special Medical Concerns for Adolescent Athletes</span></h1>
+            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <div class="lesson-sections">
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+            </div>
+          </div>`
+      },
     ]
   }
 };

@@ -541,15 +541,26 @@
     .dashboard-header h1 { font-size: 1.5rem; }
     .skill-grid { grid-template-columns: 1fr; }
 
-    /* Lesson */
-    .lesson-nav-inner { max-width: 100%; }
-    .lesson-btn { padding: 9px 16px; font-size: 0.82rem; }
+    /* Lesson nav — full width on mobile (sidebar hidden) */
+    .lesson-nav {
+      padding: 10px 12px !important;
+    }
+    .lesson-nav-inner {
+      max-width: 100%;
+      gap: 8px;
+    }
+    .lesson-btn { padding: 9px 14px; font-size: 0.82rem; }
+    .lesson-pagination { font-size: 0.76rem; }
     #page-lesson { padding-bottom: 80px; }
     .lesson-body h1 { font-size: 1.3rem; }
     .lesson-body { max-width: 100%; }
     .lesson-image-block img { max-width: 100% !important; }
     .lesson-subterm { margin-left: 0; }
     .lesson-sections { gap: 8px; }
+    /* Side-by-side images stack on mobile */
+    .lesson-body div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
 
     /* Match game */
     .match-columns { grid-template-columns: 1fr; }
@@ -567,7 +578,10 @@
   @media (max-width: 480px) {
     .nav-links a { font-size: 0.72rem; padding: 4px 6px; }
     .stats-row { grid-template-columns: 1fr; }
-    .lesson-btn { padding: 8px 14px; font-size: 0.78rem; }
+    .lesson-btn { padding: 8px 10px; font-size: 0.75rem; }
+    .lesson-pagination { font-size: 0.72rem; }
+    .skill-card h3 { font-size: 0.9rem; }
+    .lesson-nav { padding: 8px 10px !important; }
   }
 
   /* TEACHER DASHBOARD STUDENT CARDS */
@@ -818,26 +832,26 @@
     border-top: 1px solid var(--border);
     box-shadow: 0 -2px 12px rgba(26,61,181,0.06);
     z-index: 50;
-    padding: 14px 44px 14px calc(256px + 44px);
-  }
-  @media (max-width: 768px) {
-    .lesson-nav {
-      padding: 12px 16px !important;
-    }
+    padding: 12px 24px 12px 52px;
   }
   .lesson-nav-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 900px;
+    width: 100%;
+    max-width: 860px;
+    gap: 12px;
   }
   .lesson-pagination {
     font-size: 0.82rem;
     color: var(--muted);
     font-weight: 500;
+    text-align: center;
+    flex: 1;
+    white-space: nowrap;
   }
   .lesson-btn {
-    padding: 9px 22px;
+    padding: 10px 22px;
     border-radius: 7px;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.85rem;
@@ -845,6 +859,8 @@
     cursor: pointer;
     border: none;
     transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .lesson-btn-primary {
     background: var(--royal);
@@ -852,12 +868,12 @@
   }
   .lesson-btn-primary:hover { background: var(--royal-dark); transform: translateY(-1px); }
   .lesson-btn-ghost {
-    background: transparent;
-    color: var(--royal);
-    border: 1.5px solid var(--border);
+    background: var(--royal);
+    color: #fff;
+    border: none;
   }
-  .lesson-btn-ghost:hover { border-color: var(--royal); background: var(--royal-pale); }
-  .lesson-btn-ghost[style*="visibility:hidden"] { pointer-events:none; }
+  .lesson-btn-ghost:hover { background: var(--royal-dark); transform: translateY(-1px); }
+  .lesson-btn-ghost[style*="visibility:hidden"] { pointer-events:none; opacity:0; }
 
   .lesson-body {
     max-width: 720px;
@@ -1140,6 +1156,158 @@
     margin-top: 16px;
   }
 
+
+  /* Quiz / multiple choice */
+  .quiz-scenario {
+    background: var(--royal-pale);
+    border-left: 3px solid var(--royal);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .quiz-question {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin: 20px 0 14px;
+  }
+  .quiz-options { display:flex; flex-direction:column; gap:10px; }
+  .quiz-option {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    align-items: stretch;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    transition: border-color 0.15s;
+    text-align: left;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    padding: 0;
+  }
+  .quiz-option:hover { border-color: var(--royal); }
+  .quiz-option:hover .quiz-letter { background: var(--royal); color: #fff; }
+  .quiz-option:hover .quiz-text { background: var(--royal-pale); }
+  .quiz-letter {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--royal);
+    background: var(--royal-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    border-right: 1.5px solid var(--border);
+  }
+  .quiz-text {
+    padding: 12px 16px;
+    transition: background 0.15s;
+  }
+  .quiz-option.correct { border-color: #2f9e44; }
+  .quiz-option.correct .quiz-letter { background:#2f9e44; color:#fff; border-color:#2f9e44; }
+  .quiz-option.correct .quiz-text { background:#e8f5e9; }
+  .quiz-option.incorrect { border-color:#e03131; }
+  .quiz-option.incorrect .quiz-letter { background:#e03131; color:#fff; border-color:#e03131; }
+  .quiz-option.incorrect .quiz-text { background:#fff0f0; }
+  .quiz-option:disabled { cursor:default; }
+  .quiz-feedback {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    box-shadow: var(--shadow);
+  }
+  .quiz-feedback.wrong { background:#fff0f0; border:1.5px solid #e03131; color:var(--text); }
+  .quiz-feedback.right  { background:#e8f5e9; border:1.5px solid #2f9e44; color:var(--text); }
+  .quiz-feedback-label {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+  .quiz-feedback.wrong .quiz-feedback-label { color:#e03131; }
+  .quiz-feedback.right  .quiz-feedback-label { color:#2f9e44; }
+  .quiz-checklist { list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:6px; }
+  .quiz-checklist li {
+    display:flex; align-items:flex-start; gap:10px;
+    background:var(--white); border:1px solid var(--border);
+    border-radius:8px; padding:10px 14px; font-size:0.88rem; line-height:1.5;
+  }
+  .quiz-checklist li::before {
+    content:''; display:inline-block; width:7px; height:7px;
+    border-radius:50%; background:var(--royal); margin-top:6px; flex-shrink:0;
+  }
+
+  /* ── Sidebar collapsible ─────────────────────────── */
+  .sidebar {
+    transition: width 0.25s ease, opacity 0.25s ease;
+  }
+  .app.sidebar-collapsed .sidebar {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    border-right: none;
+  }
+
+  /* Sidebar toggle button — sits at left edge, vertically centered in the lesson nav */
+  .sidebar-toggle-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 56px; /* matches lesson-nav height */
+    width: 44px;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border: none;
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--royal);
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .sidebar-toggle-btn:hover { background: var(--royal-pale); }
+  .sidebar-toggle-btn svg { display: block; }
+
+  /* When sidebar is open on dashboard (not in lesson), show toggle at top-left of sidebar */
+  .sidebar-toggle-btn.dashboard-mode {
+    bottom: auto;
+    top: 64px;
+    height: 48px;
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Lesson nav shifts left when sidebar is collapsed */
+  .app:not(.sidebar-collapsed) .lesson-nav {
+    padding-left: calc(256px + 24px);
+  }
+  .app.sidebar-collapsed .lesson-nav {
+    padding-left: 52px; /* clear the toggle button */
+  }
+
+  /* Hide sidebar toggle on mobile (sidebar already hidden) */
+  @media (max-width: 768px) {
+    .sidebar-toggle-btn { display: none; }
+    .lesson-nav { padding-left: 12px !important; }
+  }
 </style>
 </head>
 <body>
@@ -1156,6 +1324,8 @@
     <li><button id="logout-btn" class="nav-cta" style="padding:8px 16px;font-size:0.84rem;">Logout</button></li>
   </ul>
 </nav>
+
+<button id="sidebar-toggle-btn" class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar"><svg width="18" height="14" viewBox="0 0 18 14" fill="none"><rect y="0" width="18" height="2" rx="1" fill="currentColor"/><rect y="6" width="18" height="2" rx="1" fill="currentColor"/><rect y="12" width="18" height="2" rx="1" fill="currentColor"/></svg></button>
 
 <div class="app">
   <!-- LOGIN PAGE -->
@@ -1205,7 +1375,7 @@
       <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
       <div class="sidebar-item" onclick="startLesson('ankle')" data-module-key="ankle">
         <div class="sidebar-dot" style="background:var(--royal)"></div>
-        Ankle Anatomy
+        Ankle and Foot Anatomy
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
       <div class="sidebar-item" onclick="startLesson('knee')" data-module-key="knee">
@@ -1333,9 +1503,9 @@
             <div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="5" y="9.5" width="14" height="5" rx="2.5"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="5.5" cy="15" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><circle cx="18.5" cy="15" r="2.2"/></g></svg></div>
             <span class="badge level1">Level 1</span>
           </div>
-          <h3>Ankle Anatomy</h3>
+          <h3>Ankle and Foot Anatomy</h3>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">2 sections</div>
+            <div style="font-size:0.76rem;color:var(--muted)">6 sections</div>
             <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
           </div>
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
@@ -1405,7 +1575,7 @@
           </div>
           <h3>Basic Wound Care</h3>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;color:var(--muted)">3 sections</div>
             <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
           </div>
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
@@ -1418,7 +1588,7 @@
           </div>
           <h3>Concussions</h3>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;color:var(--muted)">5 sections</div>
             <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
           </div>
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
@@ -1566,7 +1736,7 @@
       <div class="section-title">Level 1 — Foundations of Sports Medicine</div>
       <div class="skill-grid">
         <div class="skill-card" onclick="startLesson('terminology')" style="cursor:pointer" data-module-key="terminology"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><span class="badge level1">Level 1</span></div><h3>Common Medical Terminology</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
-        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer" data-module-key="ankle"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="5" y="9.5" width="14" height="5" rx="2.5"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="5.5" cy="15" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><circle cx="18.5" cy="15" r="2.2"/></g></svg></div><span class="badge level1">Level 1</span></div><h3>Ankle Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">2 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('ankle')" style="cursor:pointer" data-module-key="ankle"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="5" y="9.5" width="14" height="5" rx="2.5"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="5.5" cy="15" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><circle cx="18.5" cy="15" r="2.2"/></g></svg></div><span class="badge level1">Level 1</span></div><h3>Ankle and Foot Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">6 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('knee')" style="cursor:pointer" data-module-key="knee"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="5" y="9.5" width="14" height="5" rx="2.5"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="5.5" cy="15" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><circle cx="18.5" cy="15" r="2.2"/></g></svg></div><span class="badge level1">Level 1</span></div><h3>Knee Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">6 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('shoulder')" style="cursor:pointer" data-module-key="shoulder"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="5" y="9.5" width="14" height="5" rx="2.5"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="5.5" cy="15" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><circle cx="18.5" cy="15" r="2.2"/></g></svg></div><span class="badge level1">Level 1</span></div><h3>Shoulder Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('wrist')" style="cursor:pointer" data-module-key="wrist"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="0.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="5" y="9.5" width="14" height="5" rx="2.5"/><circle cx="5.5" cy="9" r="2.2"/><circle cx="5.5" cy="15" r="2.2"/><circle cx="18.5" cy="9" r="2.2"/><circle cx="18.5" cy="15" r="2.2"/></g></svg></div><span class="badge level1">Level 1</span></div><h3>Wrist Anatomy</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
@@ -1574,8 +1744,8 @@
       <div class="section-title">Level 2 — Essential Clinical Skills</div>
       <div class="skill-grid">
         <div class="skill-card" onclick="startLesson('taping')" style="cursor:pointer" data-module-key="taping"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><circle cx="11" cy="11" r="3.2"/></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Taping</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
-        <div class="skill-card" onclick="startLesson('woundcare')" style="cursor:pointer" data-module-key="woundcare"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="4" y="8" width="16" height="8" rx="4"/><rect x="8.5" y="9" width="7" height="6" rx="0.8"/></g></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Wound Care</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
-        <div class="skill-card" onclick="startLesson('concussions')" style="cursor:pointer" data-module-key="concussions"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" stroke-dasharray="2 2"/><circle cx="12" cy="12" r="10" stroke-dasharray="1 3"/></svg></div><span class="badge level2">Level 2</span></div><h3>Concussions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('woundcare')" style="cursor:pointer" data-module-key="woundcare"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="4" y="8" width="16" height="8" rx="4"/><rect x="8.5" y="9" width="7" height="6" rx="0.8"/></g></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Wound Care</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('concussions')" style="cursor:pointer" data-module-key="concussions"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" stroke-dasharray="2 2"/><circle cx="12" cy="12" r="10" stroke-dasharray="1 3"/></svg></div><span class="badge level2">Level 2</span></div><h3>Concussions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">5 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('allergic')" style="cursor:pointer" data-module-key="allergic"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="9.5" y="3" width="5" height="15" rx="1.4"/><rect x="8.8" y="1" width="6.4" height="2.3" rx="0.6"/><line x1="9.5" y1="9" x2="14.5" y2="9"/><path d="M10.5 18l-1 2.5h5l-1-2.5"/></svg></div><span class="badge level2">Level 2</span></div><h3>Allergic Reactions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('heat')" style="cursor:pointer" data-module-key="heat"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></div><span class="badge level2">Level 2</span></div><h3>Heat-Related Health Problems</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
       </div>
@@ -1629,10 +1799,10 @@ const skills = {
   ankle: {
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#1a3db5" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M8 12H5a2 2 0 0 0-2 2v6h18v-6a2 2 0 0 0-2-2h-3"/><line x1="12" y1="12" x2="12" y2="22"/></svg>',
     color: '#e8edfb',
-    title: 'Ankle Anatomy',
+    title: 'Ankle and Foot Anatomy',
     desc: 'The ankle is the most commonly injured joint in sports. Understanding its structure helps you recognize what got hurt and why — before you ever start taping or assessing.',
     steps: [
-      { num:1, done:false, title:'Ankle Anatomy Diagram', desc:'' },
+      { num:1, done:false, title:'Ankle and Foot Anatomy Diagram', desc:'' },
       { num:2, done:false, title:'How to Diagnose an Ankle Sprain', desc:'' },
     ]
   },
@@ -1668,6 +1838,7 @@ function enterStudentView() {
   isTeacherPreviewMode = true;
   const sidebar = document.querySelector('.sidebar');
   if (sidebar) sidebar.style.display = '';
+  setSidebarCollapsed(false);
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-student-preview').classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -1701,13 +1872,12 @@ function showPage(name, linkEl) {
   }
   
   // Hide sidebar for teacher dashboard, show for other pages
-  const sidebar = document.querySelector('.sidebar');
-  if (sidebar) {
-    if (name === 'teacher') {
-      sidebar.style.display = 'none';
-    } else {
-      sidebar.style.display = '';
-    }
+  // Auto-open sidebar on dashboard/student-preview, hide on teacher, leave alone otherwise
+  if (name === 'dashboard' || name === 'student-preview') {
+    setSidebarCollapsed(false);
+  } else if (name === 'teacher') {
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.style.display = 'none';
   }
   
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -2058,58 +2228,190 @@ function updateAllProgressBars(progressData) {
 
 const lessonData = {
   ankle: {
-    title: 'Ankle Anatomy',
+    title: 'Ankle and Foot Anatomy',
     pages: [
-      // Ankle page 0 — intro
+
+      // PAGE 0 — Intro
       {
         type: 'intro',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Ankle Anatomy</span>
-            </div>
-            <h1><span>Ankle Anatomy</span></h1>
-            <p>The ankle is the most commonly injured joint in sports. Understanding the ligaments and how ankle sprains happen is one of the most practical things you can learn as a student AT.</p>
-            <p>The lesson is divided into two sections:</p>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Ankle and Foot Anatomy</span></div>
+            <h1><span>Ankle and Foot Anatomy</span></h1>
+            <p>The ankle is the most commonly injured joint in sports. Understanding the bones, tendons, and ligaments of the ankle — and how injuries happen — is one of the most practical things you can learn as a student AT.</p>
+            <p>The lesson is divided into six sections:</p>
             <div class="lesson-sections">
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>Ankle Anatomy Diagram</span></div>
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>How to Diagnose an Ankle Sprain</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>Bones</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>Tendons</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">3</div><span>Ligaments</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">4</div><span>Common Injuries</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">5</div><span>How to Diagnose an Ankle Sprain</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">6</div><span>Case Studies</span></div>
             </div>
           </div>`
       },
-      // Ankle page 1 — Lateral ligaments
+
+      // PAGE 1 — Bones intro
       {
-        type: 'step',
-        stepNum: 1,
-        title: 'Ankle Anatomy Diagram',
+        type: 'step', stepNum: 1, title: 'Bones',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Section 1 of 2</span>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 6</span></div>
+            <h1><span>Bones</span></h1>
+            <p>The ankle joint is formed by the articulation of three main bones: the tibia, fibula, and talus. The calcaneus, while not directly part of the ankle joint, plays a crucial role in ankle function and stability. Understanding the anatomy and function of each bone is fundamental to recognizing injuries and providing appropriate care.</p>
+            <div class="lesson-image-block" style="margin-top:16px;text-align:center"><img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Ankle%20bones.webp" alt="Diagram of the bones of the ankle including tibia, fibula, talus, and calcaneus" style="max-width:60%;border-radius:8px;border:1px solid var(--border);display:block;margin:0 auto;"/></div>
+          </div>`
+      },
+
+      // PAGE 2 — Bones detail
+      {
+        type: 'step', stepNum: 1, title: 'Bones',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 6</span></div>
+            <h1><span>Bones</span></h1>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Tibia</div>
+              <div class="lesson-term-def">The tibia is the larger weight-bearing bone of the lower leg, located on the medial (inner) side and forms the medial portion of the ankle joint.<br><br><strong>Function:</strong> It bears most of the body's weight, provides stability to the ankle, and is the primary load-bearing structure during standing, walking, and running activities.</div>
             </div>
-            <h1><span>Ankle Anatomy Diagram</span></h1>
-            <p>When someone sprains their ankle, it most often involves the foot turning inward (inversion). This typically strains the lateral ligaments of the ankle, with the anterior talofibular ligament (ATFL) being the most commonly injured, followed by the calcaneofibular ligament (CFL). The posterior talofibular ligament (PTFL) is rarely affected in standard ankle sprains.</p>
-            <p style="margin-top:12px">These structures are shown in the Lateral Ligaments diagram below.</p>
-            <div class="lesson-image-block" style="margin-top:16px">
-              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Lateral%20Ankle%20Ligaments.webp" alt="Lateral ligaments of the ankle showing ATFL, CFL, PTFL, AITFL, and PITFL" style="max-width:65%;border-radius:8px;border:1px solid var(--border)"/>
-              <div class="lesson-image-credit">Image: Cleveland Clinic</div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Fibula</div>
+              <div class="lesson-term-def">The fibula is the smaller, non-weight-bearing bone of the lower leg, located on the lateral (outer) side.<br><br><strong>Function:</strong> It runs parallel to the tibia and provides attachment points for muscles and ligaments. Although the fibula does not directly bear body weight, it is critical for ankle stability and serves as an important anchor point for lateral ankle ligaments.</div>
             </div>
-            <div class="lesson-image-block" style="margin-top:16px">
-              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Medial%20Ankle%20Ligaments.webp" alt="Medial ligaments of the ankle showing ATTL, TNL, TCL, and PTTL" style="max-width:65%;border-radius:8px;border:1px solid var(--border)"/>
-              <div class="lesson-image-credit">Image: Cleveland Clinic © 2024</div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Medial Malleolus</div>
+              <div class="lesson-term-def">The medial malleolus is part of the tibia and forms the bony prominence on the medial side of the ankle.<br><br><strong>Function:</strong> It serves as an attachment point for ligaments that stabilize the ankle.<br><br>Injuries involving the medial malleolus, such as fractures or medial ankle sprains (deltoid ligament sprains), are less common than lateral ankle injuries but often more serious due to the strength of the deltoid ligament complex.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Lateral Malleolus</div>
+              <div class="lesson-term-def">The lateral malleolus is part of the fibula and forms the bony prominence on the lateral side of the ankle.<br><br><strong>Function:</strong> It serves as the attachment site for important lateral ankle ligaments (ATFL, CFL, and PTFL — refer to ligaments section), which help prevent excessive movement and are commonly injured during ankle sprains. The lateral malleolus extends lower than the medial malleolus, which contributes to the ankle's susceptibility to inversion injuries.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Talus</div>
+              <div class="lesson-term-def">The talus is a small bone that connects the leg to the foot. It sits between the tibia and fibula superiorly and the calcaneus inferiorly, allowing for ankle movement in multiple directions. The talus is unique because it has no direct muscle attachments — it relies entirely on ligaments for stability.<br><br><strong>Function:</strong> The talus articulates with the tibia and fibula, permitting dorsiflexion (pulling the foot upward) and plantarflexion (pointing the foot downward). The talus also allows for inversion and eversion of the foot.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Calcaneus</div>
+              <div class="lesson-term-def">The calcaneus is the heel bone and the largest bone in the foot.<br><br><strong>Function:</strong> It bears significant weight and serves as the attachment point for the Achilles tendon, the strongest tendon in the human body. The calcaneus also articulates with the talus above it, forming the subtalar joint, which is essential for foot inversion and eversion.</div>
             </div>
           </div>`
       },
-      // Ankle page 2 — Anterior Drawer Test
+
+      // PAGE 3 — Tendons
       {
-        type: 'step',
-        stepNum: 2,
-        title: 'How to Diagnose an Ankle Sprain',
+        type: 'step', stepNum: 2, title: 'Tendons',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Section 2 of 2</span>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 6</span></div>
+            <h1><span>Tendons</span></h1>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Achilles Tendon</div>
+              <div class="lesson-term-def">The Achilles tendon is the largest and strongest tendon in the human body. It connects the gastrocnemius and soleus muscles (the two main calf muscles) to the calcaneus.<br><br><strong>Function:</strong> The Achilles tendon allows the ankle to point the foot downward (plantarflexion), which is necessary for walking, running, jumping, and many other sports movements.<br><br>The tendon is most likely to be injured when high amounts of force are quickly placed upon it — like during quick starts, stops, or changes in direction. Athletes with tight calf muscles or those who suddenly increase training volume are also at higher risk.</div>
             </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Tibialis Anterior Tendon</div>
+              <div class="lesson-term-def">The tibialis anterior is a muscle located on the anterior (front) surface of the tibia. Its tendon runs along the medial aspect of the ankle and attaches to the medial cuneiform and first metatarsal bones in the foot.<br><br><strong>Function:</strong> The tibialis anterior helps lift the foot upward (dorsiflexion) and turn the sole of the foot inward (inversion). These movements are important for keeping the foot from dragging on the ground while walking and running. The tibialis anterior tendon can become irritated or inflamed in athletes who repeatedly lift their foot upward during activities like running.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Tibialis Posterior Tendon</div>
+              <div class="lesson-term-def">The tibialis posterior is a deep muscle located on the posterior surface of the tibia. Its tendon runs behind the medial malleolus and attaches to the navicular, cuneiforms, cuboid, and metatarsal bones of the foot.<br><br><strong>Function:</strong> The tibialis posterior is responsible for inversion of the foot and plantarflexion of the ankle. This muscle is also critical for supporting the medial arch of the foot and is often involved in arch-related problems common in high school athletes. The tendon can become inflamed (posterior tibial tendonitis) in athletes with flat feet or those who engage in repetitive inversion activities.</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 3b — Tendons image
+      {
+        type: 'step', stepNum: 2, title: 'Tendons',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 6</span></div>
+            <h1><span>Tendons of the Ankle &amp; Foot</span></h1>
+            <div class="lesson-image-block" style="margin-top:12px;text-align:center;">
+              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Ankle%20Tendons.webp" alt="Diagram of the tendons of the ankle and foot" style="max-width:92%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto;box-shadow:var(--shadow);"/>
+            </div>
+          </div>`
+      },
+
+      // PAGE 4 — Ligaments
+      {
+        type: 'step', stepNum: 3, title: 'Ligaments',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 6</span></div>
+            <h1><span>Ligaments</span></h1>
+            <p>The ankle is stabilized by a complex network of ligaments on both the medial and lateral sides. These ligaments are frequently injured in high school athletes, particularly in sports involving running, jumping, and rapid changes of direction.</p>
+            <div class="lesson-term">
+              <div class="lesson-term-name">ATFL, CFL, and PTFL (Lateral Ligaments)</div>
+              <div class="lesson-term-def">On the lateral side, the three most important ligaments are the Anterior Talofibular Ligament (ATFL), Calcaneofibular Ligament (CFL), and Posterior Talofibular Ligament (PTFL). These ligaments work in conjunction with each other to provide lateral ankle stability and are the ligaments most likely to be torn in an ankle sprain.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">The Deltoid Ligament (Medial)</div>
+              <div class="lesson-term-def">On the medial side, the most important ligament is the deltoid ligament — a strong, fan-shaped ligament complex made up of four parts: the anterior tibiotalar ligament, the tibiocalcaneal ligament, the posterior tibiotalar ligament, and the tibionavicular ligament.<br><br>The deltoid ligament is much stronger than the lateral ligaments. Its main job is to prevent the foot from turning outward (eversion) and to keep the inside of the ankle stable.<br><br>Because it is so strong, the deltoid ligament is injured less often. However, when it is injured, the damage is usually more severe and may occur alongside fractures of the medial malleolus or the fibula. Medial ankle sprains typically take longer to heal and often require more careful treatment to prevent long-term ankle instability.</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 4b — Ligament images
+      {
+        type: 'step', stepNum: 3, title: 'Ligaments',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 6</span></div>
+            <h1><span>Ankle Ligament Diagrams</span></h1>
+            <div class="lesson-image-block" style="margin-top:12px;text-align:center;">
+              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Lateral%20Ankle%20Ligament%20(new).webp" alt="Lateral view of ankle ligaments" style="max-width:92%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto;box-shadow:var(--shadow);"/>
+              <div class="lesson-image-credit" style="margin-top:6px;">Lateral ankle ligaments</div>
+            </div>
+            <div class="lesson-image-block" style="margin-top:24px;text-align:center;">
+              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Medial%20Ankle%20Ligaments%20(new).webp" alt="Medial view of ankle ligaments" style="max-width:92%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto;box-shadow:var(--shadow);"/>
+              <div class="lesson-image-credit" style="margin-top:6px;">Medial ankle ligaments</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 5 — Common Injuries
+      {
+        type: 'step', stepNum: 4, title: 'Common Injuries',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 6</span></div>
+            <h1><span>Common Injuries to the Ankle, Feet, and Lower Leg</span></h1>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Shin Splints (Medial Tibial Stress Syndrome)</div>
+              <div class="lesson-term-def">Shin splints, also called medial tibial stress syndrome (MTSS), cause pain along the medial border of the tibia (shin bone). The condition results from inflammation of the periosteum (the outer layer of bone) and the muscles and tendons that attach to the tibia, particularly the tibialis posterior. Shin splints are most common in distance runners and athletes who participate in sports with repetitive running or jumping.<br><br><strong>Causes:</strong> Sudden increases in training, running on hard surfaces, improper footwear, tight or weak lower leg muscles, and biomechanical problems such as overpronation or flat feet.<br><br><strong>Clinical Presentation:</strong> Pain along the inside of the shin that gets worse during activity and improves with rest. The pain often develops gradually and may affect one or both legs.<br><br><strong>Management:</strong> Reducing activity, applying ice, and gradually returning to exercise as pain improves. Stretching and strengthening the calf and lower leg muscles and wearing proper footwear can help recovery and prevent future injuries.</div>
+            </div>
+
+            <div class="lesson-term" style="margin-top:16px">
+              <div class="lesson-term-name">Ankle Sprain</div>
+              <div class="lesson-term-def">An ankle sprain occurs when one or more ankle ligaments are stretched or torn. It is the most common ankle injury in high school athletes and can range from mild to severe.<br><br><strong>Causes:</strong> Most ankle sprains happen when the foot rolls inward (inversion), damaging the ligaments on the outside of the ankle, especially the ATFL. Sprains caused by the foot rolling outward (eversion) are less common but usually more severe because they involve the stronger deltoid ligament.<br><br><strong>Clinical Presentation:</strong> Immediate pain, swelling, and difficulty bearing weight. Bruising may appear within a few hours or days, and some athletes report hearing or feeling a "pop" when the injury occurs.<br><br><strong>Management:</strong> Initial treatment follows the RICE protocol (Rest, Ice, Compression, Elevation). Early movement and rehabilitation help restore strength and reduce the risk of future sprains. Severe sprains may require a medical evaluation to rule out fractures.</div>
+            </div>
+            <div class="lesson-term" style="margin-top:16px">
+              <div class="lesson-term-name">Achilles Tendonitis</div>
+              <div class="lesson-term-def">Achilles tendonitis is inflammation of the Achilles tendon. This condition is common in high school athletes, particularly those involved in running and jumping sports.<br><br><strong>Causes:</strong> Sudden increases in training volume or intensity, inadequate warm-up, tight calf muscles, biomechanical issues such as tight hamstrings or hip flexors, and improper footwear.<br><br><strong>Clinical Presentation:</strong> Pain in the posterior heel or lower calf that worsens with activity and improves with rest. Pain may be worse in the morning or after prolonged sitting. Swelling, stiffness, and difficulty with plantarflexion (pushing off with the foot) may also be present.<br><br><strong>Management:</strong> Reduce activity, apply ice, and use anti-inflammatory measures to decrease pain and swelling. Stretching and strengthening exercises for the calf muscles are especially effective. Heel lifts may help reduce stress on the tendon.</div>
+            </div>
+            <div class="lesson-term" style="margin-top:16px">
+              <div class="lesson-term-name">Plantar Fasciitis</div>
+              <div class="lesson-term-def">Plantar fasciitis is inflammation of the plantar fascia, a thick band of tissue that runs along the bottom of the foot from the heel to the toes. The plantar fascia supports the arch of the foot and absorbs shock during walking and running.<br><br><strong>Causes:</strong> Repetitive strain from running or jumping, tight calf muscles, poor footwear, biomechanical issues such as flat feet or high arches, increased training volume, and inadequate rest.<br><br><strong>Clinical Presentation:</strong> Sharp heel pain, particularly with the first steps in the morning or after prolonged rest. Pain may improve with activity as the fascia warms up but may worsen again with continued activity.<br><br><strong>Management:</strong> Activity modification, ice application, and stretching exercises for the calf muscles and plantar fascia. Heel lifts, arch supports, or custom orthotics can help reduce stress on the fascia.</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px;align-items:start;">
+              <div style="text-align:center;">
+                <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Shin%20splints.webp" alt="Shin splints diagram" style="max-width:50%;border-radius:8px;border:1px solid var(--border);box-shadow:var(--shadow);"/>
+                <div class="lesson-image-credit" style="margin-top:4px;">Shin splints. Source: <a href="https://orthoinfo.aaos.org/en/diseases--conditions/shin-splints/" target="_blank" style="color:var(--royal);">OrthoInfo (AAOS)</a></div>
+              </div>
+              <div style="text-align:center;">
+                <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Plantar%20Fasciitis.webp" alt="Plantar fasciitis diagram" style="max-width:100%;border-radius:8px;border:1px solid var(--border);box-shadow:var(--shadow);"/>
+                <div class="lesson-image-credit" style="margin-top:4px;">Plantar fasciitis. Source: <a href="https://www.mayoclinic.org/diseases-conditions/plantar-fasciitis/multimedia/plantar-fasciitis/img-20006161" target="_blank" style="color:var(--royal);">Mayo Clinic</a></div>
+              </div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 6 — How to Diagnose
+      {
+        type: 'step', stepNum: 5, title: 'How to Diagnose an Ankle Sprain',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 6</span></div>
             <h1><span>How to Diagnose an Ankle Sprain</span></h1>
             <p>The most common test to diagnose whether the ATFL has been injured is the Anterior Drawer Test, shown in the video below.</p>
             <div class="lesson-video-embed" style="margin-top:20px">
@@ -2118,6 +2420,84 @@ const lessonData = {
             </div>
           </div>`
       },
+
+      // PAGE 7 — Case Studies intro
+      {
+        type: 'step', stepNum: 6, title: 'Case Studies',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 6 of 6</span></div>
+            <h1><span>Case Studies</span></h1>
+            <p>The following case studies present realistic scenarios commonly encountered by athletic trainers in the high school setting. For each case, carefully consider the athlete's symptoms, mechanism of injury, and clinical presentation to determine the most likely diagnosis. These cases are designed to help you develop clinical reasoning skills and practice applying your knowledge of ankle anatomy and injuries.</p>
+          </div>`
+      },
+
+      // PAGE 8 — Case Study 1
+      {
+        type: 'step', stepNum: 6, title: 'Case Studies',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 6 of 6 — Case Study 1</span></div>
+            <h1><span>Case Study 1: The Basketball Player</span></h1>
+            <div class="quiz-scenario">
+              <strong>Scenario:</strong> A 16-year-old female shooting guard sustained an inversion injury during a game. She experienced immediate sharp pain on the lateral ankle with a "pop" sensation, was unable to bear weight, and developed rapid swelling with significant bruising. Physical examination revealed a positive anterior drawer test.
+            </div>
+            <p class="quiz-question" style="margin-top:18px;">What is the most likely diagnosis?</p>
+            <div class="quiz-options" id="quiz-cs1">
+              <button class="quiz-option" onclick="ankleQuiz('cs1','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Grade I ankle sprain</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs1','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Grade II ankle sprain</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs1','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Grade III ankle sprain with possible fracture</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs1','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Peroneal tendon strain</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="quiz-cs1-wrong" style="display:none;"><div class="quiz-feedback-label">✗ Try again</div>Review the clinical presentation carefully and consider the severity of the signs.</div>
+            <div class="quiz-feedback right" id="quiz-cs1-right" style="display:none;"><div class="quiz-feedback-label">✓ Correct!</div>The clinical presentation is consistent with a Grade III ankle sprain with possible bony involvement. The "pop" sensation suggests rupture of the anterior talofibular ligament (ATFL) and calcaneofibular ligament (CFL), which are responsible for preventing inversion and anterior translation of the talus. The positive anterior drawer test indicates significant ligamentous instability. The severity of pain, inability to bear weight, and rapid swelling indicate complete ligament rupture. Imaging (X-rays and potentially MRI) is essential to rule out fracture and assess the extent of ligament damage.</div>
+          </div>`
+      },
+
+      // PAGE 9 — Case Study 2
+      {
+        type: 'step', stepNum: 6, title: 'Case Studies',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 6 of 6 — Case Study 2</span></div>
+            <h1><span>Case Study 2: The Distance Runner</span></h1>
+            <div class="quiz-scenario">
+              <strong>Scenario:</strong> A 15-year-old male cross country runner presents with a 3-week history of medial tibial pain in both legs. His training volume increased by 25% over the past month. The pain worsens during activity and improves with rest. Physical examination reveals tight calf muscles, and he reports his running shoes are several years old.
+            </div>
+            <p class="quiz-question" style="margin-top:18px;">What is the most likely diagnosis?</p>
+            <div class="quiz-options" id="quiz-cs2">
+              <button class="quiz-option" onclick="ankleQuiz('cs2','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Tibial stress fracture</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs2','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Medial tibial stress syndrome (shin splints)</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs2','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Achilles tendonitis</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs2','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Plantar fasciitis</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="quiz-cs2-wrong" style="display:none;"><div class="quiz-feedback-label">✗ Try again</div>Think about the bilateral presentation and the relationship between pain, activity, and training load.</div>
+            <div class="quiz-feedback right" id="quiz-cs2-right" style="display:none;"><div class="quiz-feedback-label">✓ Correct!</div>This clinical presentation is classic for shin splints. Key clues include pain along both shins that worsens with activity and improves with rest, a recent increase in training volume, tight calf muscles, and worn-out running shoes — all common risk factors for medial tibial stress syndrome.</div>
+          </div>`
+      },
+
+      // PAGE 10 — Case Study 3
+      {
+        type: 'step', stepNum: 6, title: 'Case Studies',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 6 of 6 — Case Study 3</span></div>
+            <h1><span>Case Study 3: The Soccer Player</span></h1>
+            <div class="quiz-scenario">
+              <strong>Scenario:</strong> A 17-year-old female soccer player presents with a 6-week history of posterior heel and lower calf pain. Symptoms are worse in the morning and worsen after practice. She started a new strength training program 8 weeks ago that included heavy calf exercises. Physical examination reveals tight calf muscles, pain with passive dorsiflexion, and pain with resisted plantarflexion.
+            </div>
+            <p class="quiz-question" style="margin-top:18px;">What is the most likely diagnosis?</p>
+            <div class="quiz-options" id="quiz-cs3">
+              <button class="quiz-option" onclick="ankleQuiz('cs3','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Achilles tendon rupture</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs3','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Shin splints</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs3','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Achilles tendonitis</span></button>
+              <button class="quiz-option" onclick="ankleQuiz('cs3','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Plantar fasciitis</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="quiz-cs3-wrong" style="display:none;"><div class="quiz-feedback-label">✗ Try again</div>Focus on the location of pain, the morning stiffness pattern, and the recent training changes.</div>
+            <div class="quiz-feedback right" id="quiz-cs3-right" style="display:none;"><div class="quiz-feedback-label">✓ Correct!</div>This presentation is consistent with Achilles tendonitis. Morning stiffness is a common sign of tendonitis because the tendon stiffens overnight. Tight calf muscles increase stress on the Achilles tendon, causing pain with stretching (passive dorsiflexion) and with resisted plantarflexion. The recent increase in strength training also suggests an overuse injury. Treatment includes reducing activity, stretching, strengthening exercises, and anti-inflammatory measures.</div>
+          </div>`
+      },
+
     ]
   },
   knee: {
@@ -2733,39 +3113,396 @@ const lessonData = {
   woundcare: {
     title: 'Basic Wound Care',
     pages: [
+
+      // PAGE 0 — Intro
       {
         type: 'intro',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Basic Wound Care</span>
-            </div>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Basic Wound Care</span></div>
             <h1><span>Basic Wound Care</span></h1>
-            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <p>Basic wound care is one of the most commonly used skills in athletic training. Knowing how to manage minor injuries quickly and safely helps athletes return to play when appropriate.</p>
             <div class="lesson-sections">
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>Ice Bag Application</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>Superficial Wound Care</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">3</div><span>Bloody Noses</span></div>
             </div>
           </div>`
       },
+
+      // PAGE 1 — Ice Bag Application
+      {
+        type: 'step', stepNum: 1, title: 'Ice Bag Application',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 3</span></div>
+            <h1><span>Ice Bag Application</span></h1>
+            <p>What's one of the first things you're given after getting injured? An ice pack! While ice packs are not a cure-all for sports injuries, they are often an important part of early injury management because they help reduce pain and inflammation (see the Modalities module to learn more).</p>
+            <p style="margin-top:12px;">Watch the following video to learn how to quickly and efficiently secure an ice bag to an athlete's body.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/H0Ft3Wp9kOc" title="Ice Bag Application — Scott Pygeorge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Scott Pygeorge — Ice Bag Application</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 2 — Superficial Wound Care
+      {
+        type: 'step', stepNum: 2, title: 'Superficial Wound Care',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 3</span></div>
+            <h1><span>Superficial Wound Care</span></h1>
+            <p>Most people know how to apply a Band-Aid&reg;, but what should you do when a wound is too large for a standard bandage?</p>
+            <p style="margin-top:12px;">Watch the following video to learn the basic steps for properly treating a larger superficial wound and safely returning an athlete to play when appropriate.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/biWDKkqpWro" title="Superficial Wound Care — Scott Pygeorge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Scott Pygeorge — Superficial Wound Care</div>
+            </div>
+            <div style="margin-top:20px;background:var(--royal-pale);border-left:3px solid var(--royal);border-radius:10px;padding:16px 20px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong>Note:</strong> In the video, water is used to irrigate the wound. For superficial wounds during a game or practice, using clean water is generally sufficient. Since the athlete will likely return to play and become dirty and sweaty again, extensive wound cleaning is usually unnecessary until after the event.<br><br>
+              Do <strong>not</strong> use hydrogen peroxide on an athlete's open wound, as it can damage healthy tissue and cause unnecessary discomfort.<br><br>
+              If a wound is deep enough to raise concerns about infection or requires more extensive treatment, the athlete should <strong>not</strong> return to play — they should be evaluated by a medical professional. Otherwise, thorough wound cleaning and dressing can be completed after the game or practice.
+            </div>
+          </div>`
+      },
+
+      // PAGE 3 — Bloody Noses
+      {
+        type: 'step', stepNum: 3, title: 'Bloody Noses',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 3</span></div>
+            <h1><span>Bloody Noses</span></h1>
+            <p>Bloody noses are especially common in contact sports, such as football, so it's important to know how to manage them safely and effectively.</p>
+            <p style="margin-top:12px;">Watch the following short video to learn how to insert a cotton nose plug to help stop a nosebleed.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/nVzmgU9ZEQQ" title="Bloody Nose Management — Scott Pygeorge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Scott Pygeorge — Managing a Bloody Nose</div>
+            </div>
+            <div style="margin-top:20px;background:var(--royal-pale);border-left:3px solid var(--royal);border-radius:10px;padding:16px 20px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong>Helpful tips:</strong><br><br>
+              Always wear gloves (see the Bloodborne Pathogens module to learn more).<br><br>
+              Have the athlete lean <strong>forward</strong>. Never tilt their head back, as this can cause blood to run down the throat.<br><br>
+              Stand to the side of the athlete when inserting a cotton plug or nasal packing. Athletes may sneeze from the discomfort, which can spray blood.<br><br>
+              If appropriate, have the athlete insert the cotton plug themselves to reduce the risk of blood exposure.
+            </div>
+          </div>`
+      },
+
     ]
   },
   concussions: {
     title: 'Concussions',
     pages: [
+
+      // PAGE 0 — Intro
       {
         type: 'intro',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Concussions</span>
-            </div>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Concussions</span></div>
             <h1><span>Concussions</span></h1>
-            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <p>Concussions are one of the most common injuries in sports, especially among high school athletes. A concussion is a mild traumatic brain injury (mTBI) caused by a blow to the head or body that makes the brain move rapidly inside the skull. Although most athletes recover completely with proper care, returning to activity too soon can increase the risk of serious complications.</p>
+            <p>Recognizing the signs and symptoms of a concussion, removing the athlete from play, and following a safe return-to-learn and return-to-play plan are essential for protecting brain health.</p>
             <div class="lesson-sections">
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>What is a Concussion?</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>Concussion Symptoms</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">3</div><span>Concussion Danger Signs</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">4</div><span>Return to Play</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">5</div><span>Learning Check</span></div>
             </div>
           </div>`
       },
+
+      // PAGE 1 — What is a Concussion
+      {
+        type: 'step', stepNum: 1, title: 'What is a Concussion?',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 5</span></div>
+            <h1><span>What is a Concussion?</span></h1>
+            <p>Watch the following video to learn exactly what happens in the brain during a concussion and how repeated head injuries can lead to conditions such as chronic traumatic encephalopathy (CTE) and post-concussion syndrome (PCS).</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/xvjK-4NXRsM?start=82" title="What happens during a concussion — TED-Ed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: TED-Ed — What happens during a concussion?</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 2 — Concussion Symptoms
+      {
+        type: 'step', stepNum: 2, title: 'Concussion Symptoms',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 5</span></div>
+            <h1><span>Concussion Symptoms</span></h1>
+            <p>Watch the following video to learn how to identify signs of a concussion.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/jh9o6Tv-Ksw" title="HEADS UP — CDC Concussion Awareness" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: CDC HEADS UP — Concussion Awareness</div>
+            </div>
+            <p style="margin-top:20px;">If you suspect someone has a concussion, notify a medical professional immediately so the athlete can be evaluated. <strong>When in doubt, sit them out!</strong></p>
+            <p style="margin-top:16px;">To reinforce what you just learned, the CDC identifies the following as common concussion signs in school-aged children and adolescents (ages 5–17):</p>
+            <ul class="quiz-checklist" style="margin-top:12px;">
+              <li>Appearing dazed, stunned, or confused about recent events</li>
+              <li>Sudden difficulty remembering or concentrating, especially on topics or activities that would otherwise hold their attention</li>
+              <li>Answering questions more slowly than usual</li>
+              <li>Appearing more clumsy than usual, seeming unsteady on their feet</li>
+              <li>Vomiting right after the injury without other causes, such as a virus</li>
+              <li>Suddenly slowed reaction times</li>
+              <li>Mood, behavior, or personality changes</li>
+            </ul>
+            <p style="margin-top:14px;font-size:0.8rem;color:var(--muted);">Source: <a href="https://www.cdc.gov/heads-up/signs-symptoms/index.html" target="_blank" style="color:var(--royal);">CDC HEADS UP — Signs and Symptoms</a></p>
+          </div>`
+      },
+
+      // PAGE 3 — Concussion Danger Signs
+      {
+        type: 'step', stepNum: 3, title: 'Concussion Danger Signs',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 5</span></div>
+            <h1><span>Concussion Danger Signs</span></h1>
+            <p>Only 5–10% of people with a concussion experience a loss of consciousness (LOC). The vast majority of concussions occur without the person ever blacking out. However, if loss of consciousness occurs, it could be a sign of a much more dangerous brain injury.</p>
+            <p style="margin-top:12px;">It can be hard to tell the difference between a possible concussion and a more life-threatening brain injury.</p>
+            <div style="background:#fff0f0;border:1.5px solid #e03131;border-radius:10px;padding:16px 20px;margin-top:16px;">
+              <p style="font-family:'Syne',sans-serif;font-weight:700;color:#e03131;margin-bottom:10px;">Call 911 or send the athlete to the nearest emergency department immediately if the athlete experiences:</p>
+              <ul class="quiz-checklist">
+                <li>Loss of consciousness with increasing drowsiness, inability to wake up, or inability to stay awake</li>
+                <li>Slurred speech, weakness, numbness, or decreased coordination</li>
+                <li>Not able to recognize people or places</li>
+                <li>Repeated nausea or vomiting</li>
+                <li>Unusual behavior, increased confusion, restlessness, or agitation</li>
+                <li>A headache that gets worse and does not go away</li>
+                <li>One pupil larger than the other or double vision</li>
+                <li>Convulsions or seizures (shaking or twitching)</li>
+              </ul>
+            </div>
+            <p style="margin-top:14px;font-size:0.8rem;color:var(--muted);">Source: <a href="https://www.cdc.gov/heads-up/signs-symptoms/index.html" target="_blank" style="color:var(--royal);">CDC HEADS UP — Signs and Symptoms</a></p>
+          </div>`
+      },
+
+      // PAGE 4 — Return to Play
+      {
+        type: 'step', stepNum: 4, title: 'Return to Play',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 5</span></div>
+            <h1><span>Return to Play</span></h1>
+            <p>Watch the following video to learn more about the steps athletes with concussions take to return to sport.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/9AH8db6ciCA" title="Concussion Return to Play — Mayo Clinic" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Mayo Clinic — Concussion Return to Play</div>
+            </div>
+            <div class="lesson-image-block" style="margin-top:24px;text-align:center;">
+              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Concussion.webp" alt="CDC Concussion Return to Play protocol chart" style="max-width:85%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto;box-shadow:var(--shadow);"/>
+              <div class="lesson-image-credit" style="margin-top:6px;">Source: <a href="https://www.cdc.gov/heads-up/guidelines/returning-to-sports.html" target="_blank" style="color:var(--royal);">CDC HEADS UP — Returning to Sports</a></div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 5 — Learning Check intro
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <p>Test your understanding with 10 multiple-choice questions. Read each scenario carefully and select the best answer. You will receive feedback after each response.</p>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 1 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">During a soccer game, an athlete heads the ball and collides with another player. They never lose consciousness but seem confused and repeatedly ask what happened.</div>
+            <p class="quiz-question" style="margin-top:18px;">What is the BEST course of action?</p>
+            <div class="quiz-options" id="con-q1">
+              <button class="quiz-option" onclick="lessonQuiz('con-q1','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Allow them to return if they say they feel fine after a few minutes.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q1','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Remove them from play and notify the athletic trainer or another medical professional immediately.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q1','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Let them finish the half and evaluate them afterward.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q1','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Give them water and continue to monitor them during the game.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q1-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Consider the signs of confusion and repeated questions — what does that suggest about their brain function?</div>
+            <div class="quiz-feedback right" id="con-q1-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Removing the athlete and notifying a medical professional immediately is always the correct first step when a concussion is suspected. Even without loss of consciousness, confusion and disorientation are clear warning signs. When in doubt, sit them out.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 2 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete takes a hard hit to the body — not the head — during a football play and shows signs of confusion.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which statement best explains why an athlete can have a concussion even without being hit directly in the head?</p>
+            <div class="quiz-options" id="con-q2">
+              <button class="quiz-option" onclick="lessonQuiz('con-q2','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Concussions only occur after direct contact with the head.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q2','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">A blow to the body can cause the brain to move rapidly inside the skull.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q2','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Neck muscles become strained during contact.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q2','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Any fall automatically causes a concussion.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q2-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about what physically happens to the brain during a forceful impact to the body.</div>
+            <div class="quiz-feedback right" id="con-q2-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>A concussion is caused when the brain moves rapidly inside the skull. A blow to the body can generate enough force to cause this movement, even without direct head contact.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 3 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">After a collision, an athlete's speech becomes slurred and they begin vomiting repeatedly on the sideline.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which athlete should be referred for emergency medical care immediately?</p>
+            <div class="quiz-options" id="con-q3">
+              <button class="quiz-option" onclick="lessonQuiz('con-q3','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">An athlete with a mild headache that is improving.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q3','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">An athlete who reports feeling tired after practice.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q3','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">An athlete whose speech becomes slurred and begins vomiting repeatedly after a collision.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q3','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">An athlete with a bruise on their forehead but no other symptoms.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q3-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Review the danger signs that indicate a possible life-threatening brain injury requiring immediate emergency care.</div>
+            <div class="quiz-feedback right" id="con-q3-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Slurred speech and repeated vomiting are danger signs of a potentially serious brain injury. Call 911 or transport the athlete to the nearest emergency department immediately.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 4 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">A volleyball player is hit in the head by a teammate's elbow. They answer questions slowly and seem unusually clumsy while walking to the bench.</div>
+            <p class="quiz-question" style="margin-top:18px;">What should you suspect?</p>
+            <div class="quiz-options" id="con-q4">
+              <button class="quiz-option" onclick="lessonQuiz('con-q4','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Heat illness</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q4','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Concussion</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q4','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Shoulder injury</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q4','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Muscle cramp</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q4-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Slow responses and unusual clumsiness after a head impact are classic signs of which injury?</div>
+            <div class="quiz-feedback right" id="con-q4-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Slowed responses, confusion, and unusual clumsiness following a head impact are classic signs of a concussion. The athlete should be removed from play and evaluated by a medical professional.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 5 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">A coach says "It's just a minor bump — they should shake it off." You are unsure whether the athlete sustained a concussion.</div>
+            <p class="quiz-question" style="margin-top:18px;">Why is the phrase 'When in doubt, sit them out' considered an important guideline?</p>
+            <div class="quiz-options" id="con-q5">
+              <button class="quiz-option" onclick="lessonQuiz('con-q5','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Because every head injury results in a concussion.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q5','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Because concussion symptoms may not appear immediately, and returning too soon can increase the risk of serious injury.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q5','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Because athletes recover faster if they stop exercising for one day.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q5','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Because coaches are required to remove every injured athlete.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q5-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about when concussion symptoms can appear and what risks come from returning to play too early.</div>
+            <div class="quiz-feedback right" id="con-q5-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Concussion symptoms may not appear immediately after an injury, and returning to play too soon significantly increases the risk of serious complications. If a concussion is suspected, the safest choice is always to remove the athlete.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 6 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete takes a hit during basketball practice. Afterward, they report mild soreness at the site of impact but no other symptoms.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which of the following is LEAST concerning after an athlete experiences a possible concussion?</p>
+            <div class="quiz-options" id="con-q6">
+              <button class="quiz-option" onclick="lessonQuiz('con-q6','a','d')"><span class="quiz-letter">A</span><span class="quiz-text">Increasing confusion and difficulty recognizing teammates.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q6','b','d')"><span class="quiz-letter">B</span><span class="quiz-text">One pupil becoming noticeably larger than the other.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q6','c','d')"><span class="quiz-letter">C</span><span class="quiz-text">A headache that continues to worsen.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q6','d','d')"><span class="quiz-letter">D</span><span class="quiz-text">Mild soreness where the athlete hit their head but no other symptoms.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q6-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Compare the options — which one does NOT appear on the list of danger signs?</div>
+            <div class="quiz-feedback right" id="con-q6-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Mild localized soreness without other neurological symptoms is the least concerning finding. The other options — increasing confusion, unequal pupils, and worsening headache — are all danger signs that may indicate a more serious brain injury.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 7 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete tells you they 'just got their bell rung' after a football play but insists they are okay.</div>
+            <p class="quiz-question" style="margin-top:18px;">As a student athletic trainer, what is the MOST appropriate response?</p>
+            <div class="quiz-options" id="con-q7">
+              <button class="quiz-option" onclick="lessonQuiz('con-q7','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Allow them to continue playing if they promise to report any symptoms later.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q7','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Encourage them to rest for five minutes before returning.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q7','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Notify the athletic trainer or another medical professional and keep the athlete out of play until they are evaluated.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q7','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Ask a teammate if the athlete looks normal.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q7-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Athletes often underreport symptoms. What is your responsibility as a student AT when a concussion is suspected?</div>
+            <div class="quiz-feedback right" id="con-q7-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Student athletic trainers should always notify the supervising athletic trainer or another medical professional when a concussion is suspected. An athlete's insistence that they are fine is not sufficient — they must be formally evaluated before returning to play.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 8 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete is cleared to return to play following a concussion and asks how the process works.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which statement best describes the Return-to-Play process following a concussion?</p>
+            <div class="quiz-options" id="con-q8">
+              <button class="quiz-option" onclick="lessonQuiz('con-q8','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Athletes may return as soon as they no longer have a headache.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q8','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Athletes should complete a gradual, step-by-step progression and only advance if symptoms do not return.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q8','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Athletes should avoid sports for exactly one week regardless of symptoms.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q8','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Athletes may return after passing a vision test.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q8-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Review the return-to-play steps — what is the guiding principle behind each step?</div>
+            <div class="quiz-feedback right" id="con-q8-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Return-to-play after a concussion follows a gradual, stepwise progression. Athletes only advance to the next step if they remain symptom-free. This approach protects athletes from the risks of returning too soon.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 9 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">After hitting their head during a wrestling match, an athlete feels dizzy, answers questions slowly, and cannot remember the score.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which athlete is MOST likely experiencing a concussion?</p>
+            <div class="quiz-options" id="con-q9">
+              <button class="quiz-option" onclick="lessonQuiz('con-q9','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">A baseball player with a swollen ankle after sliding into second base.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q9','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">A wrestler who feels dizzy, answers questions slowly, and cannot remember the score after hitting their head.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q9','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">A basketball player with a sore wrist after falling.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q9','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">A runner with muscle cramps during practice.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q9-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Which athlete has both a mechanism of head injury and neurological symptoms?</div>
+            <div class="quiz-feedback right" id="con-q9-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>The wrestler has both a head impact mechanism and classic concussion symptoms — dizziness, slowed responses, and memory difficulty. The other athletes have musculoskeletal injuries without head involvement.</div>
+          </div>`
+      },
+
+      {
+        type: 'step', stepNum: 5, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 5 of 5 — Question 10 of 10</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">You are reviewing concussion facts with your team.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which statement about loss of consciousness (LOC) is TRUE?</p>
+            <div class="quiz-options" id="con-q10">
+              <button class="quiz-option" onclick="lessonQuiz('con-q10','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Loss of consciousness occurs in most concussions.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q10','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Athletes who do not lose consciousness cannot have a concussion.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q10','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Most concussions occur without loss of consciousness, but loss of consciousness can be a sign of a more serious brain injury.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('con-q10','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Loss of consciousness means the athlete will fully recover within a few minutes.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="con-q10-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about how often loss of consciousness actually occurs in concussions, and what it may indicate when it does.</div>
+            <div class="quiz-feedback right" id="con-q10-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Only 5–10% of concussions involve loss of consciousness. The vast majority occur without the athlete blacking out. However, when loss of consciousness does occur, it may be a sign of a more serious brain injury requiring immediate evaluation.</div>
+          </div>`
+      }
+
     ]
   },
   allergic: {
@@ -2958,6 +3695,8 @@ function startLesson(lessonKey) {
   if (!isTeacherPreviewMode) markModuleInProgress(lessonKey);
   renderLessonPage();
   showPage('lesson');
+  // Auto-collapse sidebar when entering a lesson
+  setSidebarCollapsed(true);
 }
 
 function renderLessonPage() {
@@ -2985,7 +3724,7 @@ function renderLessonPage() {
   const navBar = document.querySelector('.lesson-nav');
   if (isLast || isComplete) {
     navBar.style.borderTopColor = 'var(--green)';
-    nextBtn.style.background = 'var(--green)';
+    nextBtn.style.background = isLast ? 'var(--green)' : 'var(--royal)';
   } else {
     navBar.style.borderTopColor = 'var(--border)';
     nextBtn.style.background = 'var(--royal)';
@@ -3015,6 +3754,77 @@ function lessonBack() {
 
 function goBack() {
   showPage(prevPage);
+}
+
+// Ankle case study quiz handler
+function ankleQuiz(quizId, chosen, correct) {
+  const container = document.getElementById('quiz-' + quizId);
+  const wrongEl = document.getElementById('quiz-' + quizId + '-wrong');
+  const rightEl = document.getElementById('quiz-' + quizId + '-right');
+  const buttons = container.querySelectorAll('.quiz-option');
+  if (chosen === correct) {
+    buttons.forEach(btn => {
+      btn.disabled = true;
+      const letter = btn.querySelector('.quiz-letter').textContent.toLowerCase();
+      if (letter === correct) btn.classList.add('correct');
+    });
+    wrongEl.style.display = 'none';
+    rightEl.style.display = 'block';
+  } else {
+    buttons.forEach(btn => {
+      const letter = btn.querySelector('.quiz-letter').textContent.toLowerCase();
+      btn.classList.remove('incorrect');
+      if (letter === chosen) btn.classList.add('incorrect');
+    });
+    wrongEl.style.display = 'block';
+    rightEl.style.display = 'none';
+  }
+}
+
+
+// Generic multiple-choice quiz handler for lesson pages
+function lessonQuiz(quizId, chosen, correct) {
+  const container = document.getElementById(quizId);
+  const wrongEl   = document.getElementById(quizId + '-wrong');
+  const rightEl   = document.getElementById(quizId + '-right');
+  if (!container) return;
+  const buttons = container.querySelectorAll('.quiz-option');
+  if (chosen === correct) {
+    buttons.forEach(btn => {
+      btn.disabled = true;
+      const letter = btn.querySelector('.quiz-letter').textContent.trim().toLowerCase();
+      btn.classList.remove('incorrect');
+      if (letter === correct) btn.classList.add('correct');
+    });
+    if (wrongEl) wrongEl.style.display = 'none';
+    if (rightEl) rightEl.style.display = 'block';
+  } else {
+    buttons.forEach(btn => {
+      const letter = btn.querySelector('.quiz-letter').textContent.trim().toLowerCase();
+      btn.classList.remove('incorrect');
+      if (letter === chosen) btn.classList.add('incorrect');
+    });
+    if (wrongEl) wrongEl.style.display = 'block';
+    if (rightEl) rightEl.style.display = 'none';
+  }
+}
+
+// ── Sidebar toggle ────────────────────────────────────────────────
+function setSidebarCollapsed(collapsed) {
+  const app = document.querySelector('.app');
+  const btn = document.getElementById('sidebar-toggle-btn');
+  if (!app || !btn) return;
+  if (collapsed) {
+    app.classList.add('sidebar-collapsed');
+  } else {
+    app.classList.remove('sidebar-collapsed');
+  }
+}
+
+function toggleSidebar() {
+  const app = document.querySelector('.app');
+  if (!app) return;
+  setSidebarCollapsed(!app.classList.contains('sidebar-collapsed'));
 }
 </script>
 </body>

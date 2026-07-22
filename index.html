@@ -547,6 +547,7 @@
     }
     .lesson-nav-inner {
       max-width: 100%;
+      margin: 0 auto;
       gap: 8px;
     }
     .lesson-btn { padding: 9px 14px; font-size: 0.82rem; }
@@ -832,7 +833,8 @@
     border-top: 1px solid var(--border);
     box-shadow: 0 -2px 12px rgba(26,61,181,0.06);
     z-index: 50;
-    padding: 12px 24px 12px 52px;
+    padding: 12px 24px;
+    /* padding-left overridden per sidebar state below */
   }
   .lesson-nav-inner {
     display: flex;
@@ -840,6 +842,7 @@
     justify-content: space-between;
     width: 100%;
     max-width: 860px;
+    margin: 0 auto;
     gap: 12px;
   }
   .lesson-pagination {
@@ -877,6 +880,8 @@
 
   .lesson-body {
     max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
   }
   .lesson-body h1 {
     font-family: 'Syne', sans-serif;
@@ -1266,18 +1271,18 @@
   /* Sidebar toggle button — sits at left edge, vertically centered in the lesson nav */
   .sidebar-toggle-btn {
     position: fixed;
-    bottom: 0;
+    top: 64px;
     left: 0;
-    height: 56px; /* matches lesson-nav height */
-    width: 44px;
+    height: 48px;
+    width: 48px;
     z-index: 60;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--white);
     border: none;
-    border-top: 1px solid var(--border);
     border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     cursor: pointer;
     color: var(--royal);
     transition: background 0.15s;
@@ -1286,21 +1291,12 @@
   .sidebar-toggle-btn:hover { background: var(--royal-pale); }
   .sidebar-toggle-btn svg { display: block; }
 
-  /* When sidebar is open on dashboard (not in lesson), show toggle at top-left of sidebar */
-  .sidebar-toggle-btn.dashboard-mode {
-    bottom: auto;
-    top: 64px;
-    height: 48px;
-    border-top: none;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* Lesson nav shifts left when sidebar is collapsed */
+  /* Lesson nav offsets for sidebar state */
   .app:not(.sidebar-collapsed) .lesson-nav {
-    padding-left: calc(256px + 24px);
+    padding-left: 256px;
   }
   .app.sidebar-collapsed .lesson-nav {
-    padding-left: 52px; /* clear the toggle button */
+    padding-left: 0;
   }
 
   /* Hide sidebar toggle on mobile (sidebar already hidden) */
@@ -1562,7 +1558,7 @@
           </div>
           <h3>Basic Taping</h3>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;color:var(--muted)">3 sections</div>
             <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
           </div>
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
@@ -1601,7 +1597,7 @@
           </div>
           <h3>Allergic Reactions</h3>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;color:var(--muted)">4 sections</div>
             <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
           </div>
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
@@ -1614,7 +1610,7 @@
           </div>
           <h3>Heat-Related Health Problems</h3>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-            <div style="font-size:0.76rem;color:var(--muted)">1 section</div>
+            <div style="font-size:0.76rem;color:var(--muted)">4 sections</div>
             <div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div>
           </div>
           <div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div>
@@ -1743,11 +1739,11 @@
       </div>
       <div class="section-title">Level 2 — Essential Clinical Skills</div>
       <div class="skill-grid">
-        <div class="skill-card" onclick="startLesson('taping')" style="cursor:pointer" data-module-key="taping"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><circle cx="11" cy="11" r="3.2"/></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Taping</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('taping')" style="cursor:pointer" data-module-key="taping"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><circle cx="11" cy="11" r="3.2"/></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Taping</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('woundcare')" style="cursor:pointer" data-module-key="woundcare"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><g transform="rotate(-45 12 12)"><rect x="4" y="8" width="16" height="8" rx="4"/><rect x="8.5" y="9" width="7" height="6" rx="0.8"/></g></svg></div><span class="badge level2">Level 2</span></div><h3>Basic Wound Care</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">3 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
         <div class="skill-card" onclick="startLesson('concussions')" style="cursor:pointer" data-module-key="concussions"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" stroke-dasharray="2 2"/><circle cx="12" cy="12" r="10" stroke-dasharray="1 3"/></svg></div><span class="badge level2">Level 2</span></div><h3>Concussions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">5 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
-        <div class="skill-card" onclick="startLesson('allergic')" style="cursor:pointer" data-module-key="allergic"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="9.5" y="3" width="5" height="15" rx="1.4"/><rect x="8.8" y="1" width="6.4" height="2.3" rx="0.6"/><line x1="9.5" y1="9" x2="14.5" y2="9"/><path d="M10.5 18l-1 2.5h5l-1-2.5"/></svg></div><span class="badge level2">Level 2</span></div><h3>Allergic Reactions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
-        <div class="skill-card" onclick="startLesson('heat')" style="cursor:pointer" data-module-key="heat"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></div><span class="badge level2">Level 2</span></div><h3>Heat-Related Health Problems</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">1 section</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('allergic')" style="cursor:pointer" data-module-key="allergic"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><rect x="9.5" y="3" width="5" height="15" rx="1.4"/><rect x="8.8" y="1" width="6.4" height="2.3" rx="0.6"/><line x1="9.5" y1="9" x2="14.5" y2="9"/><path d="M10.5 18l-1 2.5h5l-1-2.5"/></svg></div><span class="badge level2">Level 2</span></div><h3>Allergic Reactions</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">4 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
+        <div class="skill-card" onclick="startLesson('heat')" style="cursor:pointer" data-module-key="heat"><div class="skill-card-header"><div class="skill-icon" style="background:#e8edfb;color:var(--royal)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></div><span class="badge level2">Level 2</span></div><h3>Heat-Related Health Problems</h3><div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px"><div style="font-size:0.76rem;color:var(--muted)">4 sections</div><div style="font-size:0.76rem;font-weight:700;color:var(--royal)">Start Lesson →</div></div><div class="mini-progress" style="margin-top:10px"><div class="mini-fill" style="width:0%"></div></div></div>
       </div>
       <div class="section-title">Level 3 — Advanced Athlete Care</div>
       <div class="skill-grid">
@@ -3094,20 +3090,93 @@ const lessonData = {
   taping: {
     title: 'Basic Taping',
     pages: [
+
+      // PAGE 0 — Intro
       {
         type: 'intro',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Basic Taping</span>
-            </div>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Basic Taping</span></div>
             <h1><span>Basic Taping</span></h1>
-            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <p>Taping is one of the most common responsibilities of an athletic trainer. Understanding proper taping techniques helps support injured joints and may reduce the risk of further injury.</p>
             <div class="lesson-sections">
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>Buddy Taping</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>Wrist and Thumb Taping</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">3</div><span>Ankle Taping</span></div>
             </div>
           </div>`
       },
+
+      // PAGE 1 — Buddy Taping
+      {
+        type: 'step', stepNum: 1, title: 'Buddy Taping',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 3</span></div>
+            <h1><span>Buddy Taping</span></h1>
+            <p>Buddy taping is one of the simplest taping techniques and is commonly used for sprained or jammed fingers. Watch the following video to learn the basic steps of buddy taping.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/VPsEtdn6x2c" title="Buddy Taping — Rehab2Perform" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Rehab2Perform — Buddy Taping</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 2 — Wrist and Thumb Taping
+      {
+        type: 'step', stepNum: 2, title: 'Wrist and Thumb Taping',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 3</span></div>
+            <h1><span>Wrist and Thumb Taping</span></h1>
+            <p>Athletic trainers tape the wrist to limit excessive movement, such as hyperextension or twisting, and to support the surrounding soft tissues. Wrist taping may be used to help prevent injuries during high-impact sports or as part of an athlete's rehabilitation. Watch the following video to learn the basic steps of wrist taping.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/l5_RnG1siVE" title="Wrist Taping — PCHSSprtsmed1234" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: PCHSSprtsmed1234 — Wrist Taping</div>
+            </div>
+            <p style="margin-top:24px;">Thumb taping is often combined with and applied over a wrist tape job. It helps prevent hyperextension and limits abduction (side-to-side movement), making it useful for managing and preventing thumb injuries. Watch the following video to learn the basic steps of thumb taping.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/gY-udouAkeg" title="Thumb Taping — Scott Pygeorge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Scott Pygeorge — Thumb Taping</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 3 — Ankle Taping
+      {
+        type: 'step', stepNum: 3, title: 'Ankle Taping',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 3</span></div>
+            <h1><span>Ankle Taping</span></h1>
+            <p>Ankle taping is one of the most common taping techniques used in sports medicine. It helps support the ankle, limit excessive movement, and will reduce the risk of re-injury in athletes with a history of ankle sprains. Watch the following video to learn the basic steps of ankle taping.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/EJdySMnO68w" title="Ankle Taping — Scott Pygeorge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Scott Pygeorge — Ankle Taping</div>
+            </div>
+            <p style="margin-top:24px;">After watching the video, you can refer to the following steps:</p>
+            <div class="lesson-term" style="margin-top:12px;">
+              <div class="lesson-term-name">Step-by-Step Overview</div>
+              <div class="lesson-term-def">
+                1. Apply an adhesive spray (the video uses Tuf-Skin)<br>
+                2. Apply 2 heel and lace pads<br>
+                3. Begin the tape job:<br><br>
+                &nbsp;&nbsp;• Anchor strips<br>
+                &nbsp;&nbsp;• Stirrups (2–3)<br>
+                &nbsp;&nbsp;• Horseshoes — called <em>spurs</em> in the video (2–3)<br>
+                &nbsp;&nbsp;• Heel locks (at least 2 per side)<br>
+                &nbsp;&nbsp;• Figure-eight (optional)<br>
+                &nbsp;&nbsp;• Closing strips
+              </div>
+            </div>
+            <div style="margin-top:20px;background:var(--royal-pale);border-left:3px solid var(--royal);border-radius:10px;padding:16px 20px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong>Helpful tips:</strong><br><br>
+              Keep the athlete's foot at a 90° angle throughout the entire tape job. If the foot begins to drop, the tape may loosen and provide less support.<br><br>
+              Athletic trainers often vary the order of the tape strips to improve speed and efficiency. For example, some incorporate the horseshoes into the closing strips, while others choose not to use a figure-eight. Because techniques vary, check with your athletic trainers to ensure your taping method is both safe and supportive.
+            </div>
+          </div>`
+      },
+
     ]
   },
   woundcare: {
@@ -3508,39 +3577,609 @@ const lessonData = {
   allergic: {
     title: 'Allergic Reactions',
     pages: [
+
+      // PAGE 0 — Intro
       {
         type: 'intro',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Allergic Reactions</span>
-            </div>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Allergic Reactions</span></div>
             <h1><span>Allergic Reactions</span></h1>
-            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <p>Allergic reactions can happen suddenly during practices and games, even in athletes with no previous history of allergies. Student athletic trainers should know how to recognize the signs of an allergic reaction and respond appropriately, especially if an athlete develops anaphylaxis, a life-threatening emergency.</p>
+            <p style="margin-top:12px;">This lesson is divided into 4 sections:</p>
             <div class="lesson-sections">
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>What is an Allergic Reaction?</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>Recognizing Anaphylaxis</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">3</div><span>EpiPen® Administration</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">4</div><span>Learning Check</span></div>
             </div>
           </div>`
       },
+
+      // PAGE 1 — What is an Allergic Reaction?
+      {
+        type: 'step', stepNum: 1, title: 'What is an Allergic Reaction?',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 4</span></div>
+            <h1><span>What is an Allergic Reaction?</span></h1>
+            <p>An allergic reaction occurs when the immune system overreacts to a harmless substance known as an allergen.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Common Allergens</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Insect stings (bees, wasps)</li>
+                  <li>Foods (peanuts, tree nuts, shellfish, milk)</li>
+                  <li>Pollen and dust</li>
+                  <li>Latex</li>
+                  <li>Certain medications — commonly antibiotics (e.g., penicillin) or NSAIDs* (e.g., ibuprofen and aspirin)</li>
+                </ul>
+                <p style="margin-top:10px;font-size:0.82rem;color:var(--muted);">*NSAIDs = Nonsteroidal Anti-Inflammatory Drugs</p>
+              </div>
+            </div>
+            <p style="margin-top:16px;">The first time a person is exposed to an allergen, they may not experience an allergic reaction. However, this initial exposure can sensitize the immune system, causing future exposures — even small ones — to trigger an allergic reaction.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">How Allergens Enter the Body</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li><strong>Inhaled</strong> through the nose and mouth — such as pollen, mold, and pet dander</li>
+                  <li><strong>Ingested</strong> by mouth — including foods or medicines</li>
+                  <li><strong>Injected</strong> through insect bites or stings</li>
+                  <li><strong>Absorbed</strong> through the skin — such as with latex or metal</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 2 — Symptoms
+      {
+        type: 'step', stepNum: 1, title: 'What is an Allergic Reaction?',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 4</span></div>
+            <h1><span>Allergic Reaction Symptoms</span></h1>
+            <p>The immune response associated with an allergic reaction can cause a variety of symptoms, ranging from mild to severe.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Mild Symptoms</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Coughing</li>
+                  <li>Runny nose, sneezing, and congestion</li>
+                  <li>Watery eyes</li>
+                  <li>Localized itching (itching in one contained area)</li>
+                  <li>Localized rash</li>
+                  <li>Swollen mucous membranes</li>
+                  <li>Stomach upset (gastrointestinal symptoms)</li>
+                </ul>
+              </div>
+            </div>
+            <p style="margin-top:16px;">Allergic reactions often begin with mild symptoms but can worsen over time. Moderate allergic reactions are more serious than mild reactions but are not as severe as anaphylaxis.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Moderate Symptoms</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Facial swelling</li>
+                  <li>Swollen lips</li>
+                  <li>Hives</li>
+                  <li>Nausea</li>
+                  <li>Vomiting</li>
+                </ul>
+              </div>
+            </div>
+            <p style="margin-top:16px;">If symptoms worsen, the reaction may become severe. Severe allergic reactions can progress quickly to anaphylaxis — a life-threatening medical emergency that requires immediate medical treatment and emergency evaluation.</p>
+            <div style="margin-top:16px;background:#fff0f0;border:1.5px solid #e03131;border-radius:10px;padding:14px 18px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong style="color:#e03131;">Important:</strong> Even mild allergic reactions should be reported to the athletic trainer because symptoms can worsen.
+            </div>
+          </div>`
+      },
+
+      // PAGE 3 — Recognizing Anaphylaxis
+      {
+        type: 'step', stepNum: 2, title: 'Recognizing Anaphylaxis',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 4</span></div>
+            <h1><span>Recognizing Anaphylaxis</span></h1>
+            <p>Anaphylaxis is a severe allergic reaction that can become life-threatening within minutes if not treated promptly. The first-line treatment for anaphylaxis is epinephrine, delivered by an auto-injector (EpiPen® or Auvi-Q®) or nasal spray (Neffy®).</p>
+            <div style="margin-top:16px;background:#fff0f0;border:1.5px solid #e03131;border-radius:10px;padding:14px 18px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong style="color:#e03131;">If you or someone you know is having a severe allergic reaction:</strong> Assume it's an anaphylactic reaction. Administer an epinephrine injection (if available) and call 911 immediately.<br><br>
+              <strong>Always call 911 after epinephrine is administered</strong> — even if symptoms improve. Emergency medical evaluation is still necessary because symptoms can return or worsen.
+            </div>
+            <p style="margin-top:16px;">Symptoms usually occur within minutes to hours of exposure and affect multiple parts of the body at once — such as the lungs, heart, skin, or digestive system.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Signs of Anaphylaxis</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Difficulty breathing or wheezing</li>
+                  <li>Swelling of the lips and tongue that makes swallowing difficult</li>
+                  <li>Hives</li>
+                  <li>Itchy mouth</li>
+                  <li>Vomiting, diarrhea, or cramps</li>
+                  <li>Chest tightness or pain</li>
+                  <li>Dizziness or weak pulse</li>
+                  <li>Headache</li>
+                  <li>Sweating</li>
+                  <li>Confusion</li>
+                  <li>Feeling of impending doom</li>
+                  <li>Loss of consciousness</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Most Common Causes of Anaphylaxis</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Wasp and bee venom</li>
+                  <li>Legumes, especially peanuts</li>
+                  <li>Animal proteins, especially cow's milk, eggs, and seafood</li>
+                  <li>Medications, especially antibiotics and NSAIDs (e.g., ibuprofen)</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 4 — EpiPen Administration
+      {
+        type: 'step', stepNum: 3, title: 'EpiPen® Administration',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 4</span></div>
+            <h1><span>EpiPen® Administration</span></h1>
+            <div style="margin-top:4px;background:var(--royal-pale);border-left:3px solid var(--royal);border-radius:10px;padding:14px 18px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong>Note:</strong> The following content is intended for educational purposes only and is not a substitute for official EpiPen® administration training. To become familiar with proper administration, practice with a trainer device and review your school's emergency protocols with your athletic trainers.
+            </div>
+            <p style="margin-top:16px;">Knowing how to administer an EpiPen® can make all the difference in a life-or-death situation. Watch the following video to learn the basic steps.</p>
+            <div class="lesson-video-embed" style="margin-top:20px;">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/L501Sb7y5Kk" title="EpiPen Administration — Cleveland Clinic" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px;"></iframe>
+              <div class="lesson-image-credit" style="margin-top:6px;">Video: Cleveland Clinic — How to Use an EpiPen®</div>
+            </div>
+            <div class="lesson-term" style="margin-top:20px;">
+              <div class="lesson-term-name">If an Athlete Is Experiencing a Severe Allergic Reaction or Anaphylaxis</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Stay calm and notify the athletic trainer immediately</li>
+                  <li>Call 911</li>
+                  <li>Assist the athlete with their prescribed epinephrine auto-injector if trained and permitted by school policy</li>
+                  <li>Epinephrine is injected into the outer thigh — it can be given through clothing if necessary</li>
+                  <li>Keep the athlete lying down if possible, unless breathing is easier while sitting</li>
+                  <li>A second dose may be needed if EMS has not arrived and symptoms continue (according to the athlete's emergency action plan or local protocol)</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 5 — Learning Check intro
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4</span></div>
+            <h1><span>Learning Check</span></h1>
+            <p>Test your understanding with 5 multiple-choice questions. Read each scenario carefully and select the best answer. You will receive feedback after each response.</p>
+          </div>`
+      },
+
+      // PAGE 6 — Q1
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 1 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">During a cross-country meet, a runner is stung by a bee. A few minutes later they begin wheezing and say their throat feels tight.</div>
+            <p class="quiz-question" style="margin-top:18px;">What is the MOST appropriate next step?</p>
+            <div class="quiz-options" id="allerg-q1">
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q1','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Give them water.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q1','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Notify the athletic trainer, call 911, and prepare to assist with their prescribed epinephrine auto-injector.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q1','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Have them sit for 15 minutes, then check to see if their reaction gets worse before proceeding with any medical intervention.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q1','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Tell them to keep running; they're just tired and should finish the race.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="allerg-q1-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about the signs of anaphylaxis — wheezing and throat tightness after a bee sting are serious warning signs that require immediate action.</div>
+            <div class="quiz-feedback right" id="allerg-q1-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Wheezing and throat tightness following a bee sting are signs of a potentially life-threatening anaphylactic reaction. The correct response is to immediately notify the athletic trainer, call 911, and be ready to assist with the athlete's prescribed epinephrine auto-injector. Do not wait for symptoms to worsen.</div>
+          </div>`
+      },
+
+      // PAGE 7 — Q2
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 2 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete reports several symptoms after coming into contact with a substance on the field.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which symptom is MOST concerning after an allergic reaction?</p>
+            <div class="quiz-options" id="allerg-q2">
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q2','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Sneezing</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q2','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Itchy eyes</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q2','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Difficulty breathing</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q2','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Mild rash</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="allerg-q2-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Consider which symptom indicates a problem with a vital body system.</div>
+            <div class="quiz-feedback right" id="allerg-q2-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Difficulty breathing is the most concerning symptom because it indicates the reaction may be progressing to anaphylaxis — a life-threatening emergency. Sneezing, itchy eyes, and a mild rash are signs of a milder reaction.</div>
+          </div>`
+      },
+
+      // PAGE 8 — Q3
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 3 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">You are reviewing allergen awareness with your team before a tournament.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which of the following is a common allergen in athletics?</p>
+            <div class="quiz-options" id="allerg-q3">
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q3','a','d')"><span class="quiz-letter">A</span><span class="quiz-text">Bee stings</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q3','b','d')"><span class="quiz-letter">B</span><span class="quiz-text">Peanuts</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q3','c','d')"><span class="quiz-letter">C</span><span class="quiz-text">Latex</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q3','d','d')"><span class="quiz-letter">D</span><span class="quiz-text">All of the above</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="allerg-q3-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about all the common allergens discussed in the lesson.</div>
+            <div class="quiz-feedback right" id="allerg-q3-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>All three — bee stings, peanuts, and latex — are common allergens encountered in athletic settings. Athletic trainers need to be aware of all of them when working with athletes.</div>
+          </div>`
+      },
+
+      // PAGE 9 — Q4
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 4 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete uses their EpiPen® during practice and says they feel much better a few minutes later.</div>
+            <p class="quiz-question" style="margin-top:18px;">What should happen next?</p>
+            <div class="quiz-options" id="allerg-q4">
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q4','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Return to practice.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q4','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Go home.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q4','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Still be evaluated by EMS or in the emergency department.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q4','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Drink water and rest.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="allerg-q4-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Remember what happens after epinephrine is administered — is the athlete truly out of danger?</div>
+            <div class="quiz-feedback right" id="allerg-q4-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Even if symptoms improve after using an EpiPen®, the athlete must still be evaluated by EMS or at an emergency department. Symptoms can return (a biphasic reaction) or worsen, and the effects of epinephrine are temporary. Always call 911 after administering epinephrine.</div>
+          </div>`
+      },
+
+      // PAGE 10 — Q5
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 5 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">You are watching four athletes on the sideline, each reporting different symptoms after possible allergen exposure.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which athlete is MOST likely experiencing anaphylaxis?</p>
+            <div class="quiz-options" id="allerg-q5">
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q5','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Athlete with itchy eyes.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q5','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Athlete with one hive on the arm.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q5','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Athlete with swelling of the lips and difficulty breathing.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('allerg-q5','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Athlete with a mosquito bite.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="allerg-q5-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Review the signs of anaphylaxis — which of these involves multiple body systems at once?</div>
+            <div class="quiz-feedback right" id="allerg-q5-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Swelling of the lips and difficulty breathing are hallmark signs of anaphylaxis — a severe, life-threatening reaction affecting multiple body systems at once. The other athletes show signs of mild allergic reactions that should still be monitored but are not immediately life-threatening.</div>
+          </div>`
+      },
+
     ]
   },
   heat: {
     title: 'Heat-Related Health Problems',
     pages: [
+
+      // PAGE 0 — Intro
       {
         type: 'intro',
         render: () => `
           <div class="lesson-body">
-            <div class="lesson-step-header">
-              <span class="lesson-step-tag">Heat-Related Health Problems</span>
-            </div>
+            <div class="lesson-step-header"><span class="lesson-step-tag">Heat-Related Health Problems</span></div>
             <h1><span>Heat-Related Health Problems</span></h1>
-            <p>Content for this lesson is coming soon. Check back shortly — your teacher is still building this module.</p>
+            <p>Heat-related illnesses are among the most serious medical emergencies in sports. They can develop during practices or competitions, especially in hot and humid conditions. Recognizing the early signs of heat illness and responding quickly can prevent serious complications and save an athlete's life.</p>
+            <p style="margin-top:12px;">This lesson is divided into 4 sections:</p>
             <div class="lesson-sections">
-              <div class="lesson-section-pill"><div class="lesson-section-pill-num">—</div><span>Content coming soon</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">1</div><span>Why Heat Illness Happens</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">2</div><span>Heat Exhaustion</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">3</div><span>Heat Stroke</span></div>
+              <div class="lesson-section-pill"><div class="lesson-section-pill-num">4</div><span>Learning Check</span></div>
             </div>
           </div>`
       },
+
+      // PAGE 1 — Why Heat Illness Happens
+      {
+        type: 'step', stepNum: 1, title: 'Why Heat Illness Happens',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 4</span></div>
+            <h1><span>Why Heat Illness Happens</span></h1>
+            <p>Normally, the body maintains a core temperature of between 97–99°F. During exercise, muscles produce large amounts of heat. The body cools itself primarily by sweating — as sweat evaporates from the skin, heat is removed from the body.</p>
+            <p style="margin-top:12px;">However, when temperatures are high, humidity is high, or an athlete becomes dehydrated, sweating becomes less effective. As a result, body temperature rises, increasing the risk of heat-related illness.</p>
+            <div style="margin-top:20px;background:var(--royal-pale);border-radius:10px;padding:16px 20px;font-size:0.88rem;line-height:1.9;text-align:center;color:var(--text);">
+              Exercise &rarr; Heat Production &rarr; Sweating &rarr; Cooling<br>
+              <span style="color:#e03131;font-weight:600;">If sweating can't keep up &rarr; Heat builds up &rarr; Heat Exhaustion &rarr; Heat Stroke</span>
+            </div>
+            <div class="lesson-term" style="margin-top:20px;">
+              <div class="lesson-term-name">Athletes Are at Greater Risk If They:</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Exercise in hot or humid weather</li>
+                  <li>Wear heavy protective equipment</li>
+                  <li>Are dehydrated</li>
+                  <li>Suddenly increase training intensity</li>
+                  <li>Are not acclimatized to exercising in the heat</li>
+                  <li>Have recently been ill</li>
+                </ul>
+              </div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 2 — Why Is Heat Illness So Dangerous?
+      {
+        type: 'step', stepNum: 1, title: 'Why Heat Illness Happens',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 4</span></div>
+            <h1><span>Why Is Heat Illness So Dangerous?</span></h1>
+            <p>Heat illness is a progressive medical emergency that becomes lethal because it overwhelms the body's ability to keep its internal environment balanced and stable. When the body's internal cooling system completely breaks down and the core temperature climbs above 104°F (40°C), a patient enters heat stroke.</p>
+            <p style="margin-top:12px;">High body temperatures affect the body in several ways:</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Brain</div>
+              <div class="lesson-term-def">The brain is very sensitive to heat. Athletes may become confused, disoriented, have seizures, or lose consciousness. In severe cases, athletes can sustain permanent brain damage if not cooled in time.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Heart and Blood Vessels</div>
+              <div class="lesson-term-def">To dump heat, blood vessels near the skin widen dramatically. The heart must beat much faster to pump blood to the skin for cooling. If it cannot keep up, blood pressure can drop, leading to shock.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Kidneys</div>
+              <div class="lesson-term-def">Heavy sweating causes dehydration, reducing blood flow to the kidneys. Lacking blood and overwhelmed by cellular waste, the kidneys rapidly shut down, causing kidney injury.</div>
+            </div>
+            <div class="lesson-term">
+              <div class="lesson-term-name">Cells</div>
+              <div class="lesson-term-def">At extreme temperatures, vital proteins and enzymes change shape and stop working (protein denaturation). Once these microscopic structures unfold, they cannot be repaired, causing widespread cell death and triggering a massive, body-wide inflammatory response.</div>
+            </div>
+          </div>`
+      },
+
+      // PAGE 3 — Prevention
+      {
+        type: 'step', stepNum: 1, title: 'Why Heat Illness Happens',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 1 of 4</span></div>
+            <h1><span>Prevention</span></h1>
+            <p>Preventing heat illness is easier than treating it.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Athletes Should:</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Drink fluids before, during, and after activity</li>
+                  <li>Gradually acclimatize to hot weather</li>
+                  <li>Take scheduled water breaks</li>
+                  <li>Take breaks in shaded or air-conditioned areas when possible</li>
+                  <li>Wear lightweight, light-colored clothing when appropriate</li>
+                  <li>Avoid excessive exercise during extreme heat</li>
+                  <li>Report symptoms early</li>
+                </ul>
+              </div>
+            </div>
+            <div style="margin-top:20px;background:var(--royal-pale);border-left:3px solid var(--royal);border-radius:10px;padding:16px 20px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong>Wet Bulb Globe Temperature (WBGT):</strong> Athletic trainers often use the WBGT to determine whether conditions are safe for outdoor activity. WBGT considers temperature, humidity, sunlight, and wind to estimate heat stress.
+            </div>
+          </div>`
+      },
+
+      // PAGE 4 — Heat Exhaustion
+      {
+        type: 'step', stepNum: 2, title: 'Heat Exhaustion',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 2 of 4</span></div>
+            <h1><span>Heat Exhaustion</span></h1>
+            <p>Heat exhaustion occurs when the body loses excessive water and electrolytes through sweating but is still able to regulate its temperature. Body temperature is usually below 104°F.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Common Signs and Symptoms</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Heavy sweating</li>
+                  <li>Fatigue and weakness</li>
+                  <li>Dizziness</li>
+                  <li>Headache</li>
+                  <li>Nausea or vomiting</li>
+                  <li>Muscle cramps</li>
+                  <li>Pale, cool, clammy skin</li>
+                  <li>Rapid pulse</li>
+                  <li>Excessive thirst</li>
+                </ul>
+              </div>
+            </div>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Treatment</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Stop activity immediately</li>
+                  <li>Move the athlete to a cool or shaded area</li>
+                  <li>Remove excess clothing or equipment</li>
+                  <li>Apply ice towels or ice packs, especially under armpits or around the neck</li>
+                  <li>Give cool fluids if the athlete is awake and able to drink</li>
+                  <li>Notify the athletic trainer</li>
+                </ul>
+              </div>
+            </div>
+            <p style="margin-top:14px;font-size:0.88rem;color:var(--muted);">Most athletes recover quickly with prompt treatment.</p>
+          </div>`
+      },
+
+      // PAGE 5 — Heat Stroke
+      {
+        type: 'step', stepNum: 3, title: 'Heat Stroke',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 4</span></div>
+            <h1><span>Heat Stroke</span></h1>
+            <p>Heat stroke occurs when the body's cooling system fails and the core temperature rises above 104°F (40°C). It is a life-threatening medical emergency.</p>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Common Signs and Symptoms</div>
+              <div class="lesson-term-def">
+                <ul class="quiz-checklist" style="margin-top:4px;">
+                  <li>Core body temperature above 104°F</li>
+                  <li>Confusion or irritability</li>
+                  <li>Slurred speech</li>
+                  <li>Loss of coordination</li>
+                  <li>Collapse</li>
+                  <li>Seizure</li>
+                  <li>Loss of consciousness</li>
+                </ul>
+              </div>
+            </div>
+            <div style="margin-top:16px;background:#fff0f0;border:1.5px solid #e03131;border-radius:10px;padding:14px 18px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong style="color:#e03131;">Important:</strong> Heat stroke can occur even if a person is still sweating. While dry, hot skin is a classic sign, many people continue to sweat heavily when their body reaches dangerously high temperatures. Waiting for someone to stop sweating before taking action can lead to fatal delays in treatment.
+            </div>
+            <div class="lesson-term" style="margin-top:16px;">
+              <div class="lesson-term-name">Treatment — Call 911 Immediately</div>
+              <div class="lesson-term-def">
+                While waiting for EMS:
+                <ul class="quiz-checklist" style="margin-top:8px;">
+                  <li>Begin rapid cooling immediately</li>
+                  <li>Remove excess clothing and move the athlete to shade</li>
+                  <li>Apply cold towels or ice packs, especially under armpits or around the neck</li>
+                  <li>If available, immerse the athlete in cold water (cold-water immersion is the preferred treatment)</li>
+                  <li>Monitor breathing and responsiveness</li>
+                </ul>
+              </div>
+            </div>
+            <div style="margin-top:16px;background:var(--royal-pale);border-left:3px solid var(--royal);border-radius:10px;padding:14px 18px;font-size:0.88rem;line-height:1.7;color:var(--text);">
+              <strong>Cool first, transport second</strong> is the current best practice when appropriate medical personnel and equipment are available.<br><br>
+              <strong>Every minute treatment is delayed increases the risk of permanent organ damage.</strong>
+            </div>
+          </div>`
+      },
+
+      // PAGE 6 — Comparison Infographic
+      {
+        type: 'step', stepNum: 3, title: 'Heat Stroke',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 3 of 4</span></div>
+            <h1><span>Heat Exhaustion vs. Heat Stroke</span></h1>
+            <p>View the following infographic to review the symptoms of both heat exhaustion and heat stroke, while also noting the differences between the two.</p>
+            <div class="lesson-image-block" style="margin-top:20px;text-align:center;">
+              <img src="https://raw.githubusercontent.com/sivanisubramanian/ATlas/main/images/Heat%20Illness%20Comp.webp" alt="Heat Exhaustion vs Heat Stroke comparison infographic" style="max-width:92%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto;box-shadow:var(--shadow);"/>
+            </div>
+          </div>`
+      },
+
+      // PAGE 7 — Learning Check Intro
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4</span></div>
+            <h1><span>Learning Check</span></h1>
+            <p>Test your understanding with 5 multiple-choice questions. Read each scenario carefully and select the best answer. You will receive feedback after each response.</p>
+          </div>`
+      },
+
+      // PAGE 8 — Q1
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 1 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">A football player becomes dizzy during preseason practice. He is sweating heavily and complains of nausea but is alert and answering questions normally.</div>
+            <p class="quiz-question" style="margin-top:18px;">What is the MOST likely diagnosis?</p>
+            <div class="quiz-options" id="heat-q1">
+              <button class="quiz-option" onclick="lessonQuiz('heat-q1','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Concussion</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q1','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Heat exhaustion</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q1','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Heat stroke</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q1','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Cardiac arrest</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="heat-q1-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about the athlete's symptoms — he is alert, sweating heavily, and has no neurological changes. Which condition fits best?</div>
+            <div class="quiz-feedback right" id="heat-q1-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>The athlete is showing classic signs of heat exhaustion: heavy sweating, dizziness, nausea, and alertness. Because he is still alert and his temperature is likely below 104°F, this is heat exhaustion — not heat stroke, which involves neurological changes such as confusion or loss of consciousness.</div>
+          </div>`
+      },
+
+      // PAGE 9 — Q2
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 2 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete is being evaluated on the sideline after collapsing in the heat.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which symptom is MOST concerning for heat stroke?</p>
+            <div class="quiz-options" id="heat-q2">
+              <button class="quiz-option" onclick="lessonQuiz('heat-q2','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Heavy sweating</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q2','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Muscle cramps</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q2','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Confusion</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q2','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Thirst</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="heat-q2-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Consider which symptom indicates the brain is being affected by extreme heat.</div>
+            <div class="quiz-feedback right" id="heat-q2-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Confusion is a hallmark sign of heat stroke because it indicates the brain is being affected by dangerously high temperatures. Heavy sweating, muscle cramps, and thirst are commonly seen in heat exhaustion and do not by themselves indicate heat stroke.</div>
+          </div>`
+      },
+
+      // PAGE 10 — Q3
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 3 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">An athlete collapses during practice, becomes confused, and has a temperature above 104°F.</div>
+            <p class="quiz-question" style="margin-top:18px;">What should you do FIRST?</p>
+            <div class="quiz-options" id="heat-q3">
+              <button class="quiz-option" onclick="lessonQuiz('heat-q3','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">Give sports drinks.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q3','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">Call 911 and begin rapid cooling.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q3','c','b')"><span class="quiz-letter">C</span><span class="quiz-text">Wait 15 minutes to see if they improve.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q3','d','b')"><span class="quiz-letter">D</span><span class="quiz-text">Move them indoors and observe.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="heat-q3-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>This athlete has heat stroke — a life-threatening emergency. What is the most critical first action?</div>
+            <div class="quiz-feedback right" id="heat-q3-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Heat stroke is a life-threatening emergency. Call 911 immediately and begin rapid cooling without delay. Every minute of delay increases the risk of permanent organ damage. Do not wait for symptoms to improve on their own.</div>
+          </div>`
+      },
+
+      // PAGE 11 — Q4
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 4 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">You are reviewing heat illness risk factors with a new group of student athletic trainers.</div>
+            <p class="quiz-question" style="margin-top:18px;">Which factor increases the risk of heat illness?</p>
+            <div class="quiz-options" id="heat-q4">
+              <button class="quiz-option" onclick="lessonQuiz('heat-q4','a','c')"><span class="quiz-letter">A</span><span class="quiz-text">Acclimatizing gradually to the heat</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q4','b','c')"><span class="quiz-letter">B</span><span class="quiz-text">Drinking water regularly throughout practice</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q4','c','c')"><span class="quiz-letter">C</span><span class="quiz-text">Exercising while dehydrated</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q4','d','c')"><span class="quiz-letter">D</span><span class="quiz-text">Wearing light, breathable clothing</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="heat-q4-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Think about which factor makes it harder for the body to cool itself effectively.</div>
+            <div class="quiz-feedback right" id="heat-q4-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>Dehydration significantly increases the risk of heat illness because it reduces the body's ability to sweat and cool itself. Acclimatizing gradually, staying hydrated, and wearing appropriate clothing all reduce heat illness risk.</div>
+          </div>`
+      },
+
+      // PAGE 12 — Q5
+      {
+        type: 'step', stepNum: 4, title: 'Learning Check',
+        render: () => `
+          <div class="lesson-body">
+            <div class="lesson-step-header"><span class="lesson-step-tag">Section 4 of 4 — Question 5 of 5</span></div>
+            <h1><span>Learning Check</span></h1>
+            <div class="quiz-scenario">A teammate tells you that athletes must stop sweating before they can have heat stroke.</div>
+            <p class="quiz-question" style="margin-top:18px;">Is this statement true or false?</p>
+            <div class="quiz-options" id="heat-q5">
+              <button class="quiz-option" onclick="lessonQuiz('heat-q5','a','b')"><span class="quiz-letter">A</span><span class="quiz-text">True — an athlete must stop sweating before heat stroke can occur.</span></button>
+              <button class="quiz-option" onclick="lessonQuiz('heat-q5','b','b')"><span class="quiz-letter">B</span><span class="quiz-text">False — heat stroke can occur even if a person is still sweating.</span></button>
+            </div>
+            <div class="quiz-feedback wrong" id="heat-q5-wrong" style="display:none;"><div class="quiz-feedback-label">&#x2717; Try again</div>Recall the important note from the heat stroke section about sweating and body temperature.</div>
+            <div class="quiz-feedback right" id="heat-q5-right" style="display:none;"><div class="quiz-feedback-label">&#x2713; Correct!</div>This is a common and dangerous misconception. Heat stroke can occur even if an athlete is still sweating heavily. Waiting for someone to stop sweating before taking action can lead to fatal delays in treatment. Always act on other signs of heat stroke — especially confusion, collapse, or a temperature above 104°F.</div>
+          </div>`
+      },
+
     ]
   },
   bloodborne: {

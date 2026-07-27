@@ -636,7 +636,114 @@ function updateAllProgressBars(progressData) {
 }
 
 // Make functions globally accessible
+
+// ── Sign Up (student only — extend for teacher later) ────────────────────────
+async function handleSignUp() {
+  const firstNameInput = document.getElementById('signup-firstname');
+  const lastNameInput  = document.getElementById('signup-lastname');
+  const emailInput     = document.getElementById('signup-email');
+  const passwordInput  = document.getElementById('signup-password');
+  const errorDiv       = document.getElementById('signup-error');
+  const btn            = document.getElementById('signup-btn');
+
+  const firstName = firstNameInput ? firstNameInput.value.trim() : '';
+  const lastName  = lastNameInput  ? lastNameInput.value.trim()  : '';
+  const email     = emailInput     ? emailInput.value.trim()     : '';
+  const password  = passwordInput  ? passwordInput.value         : '';
+  const fullName  = `${firstName} ${lastName}`.trim();
+
+  // Clear previous errors
+  if (errorDiv) { errorDiv.style.display = 'none'; errorDiv.textContent = ''; }
+
+  // Validation
+  if (!firstName || !lastName) {
+    showSignUpError('Please enter your first and last name.');
+    return;
+  }
+  if (!email) {
+    showSignUpError('Please enter your email address.');
+    return;
+  }
+  if (!password || password.length < 6) {
+    showSignUpError('Password must be at least 6 characters.');
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating account…'; }
+
+  try {
+    // 1. Create Firebase Auth account
+    const userCredential = await auth1.createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+    console.log('Sign-up auth successful, UID:', user.uid);
+
+    // 2. Write user document to Firestore users collection
+    await db.collection('users').doc(user.uid).set({
+      name:      fullName,
+      firstName: firstName,
+      lastName:  lastName,
+      email:     email,
+      role:      'student',
+      // When teacher sign-up is added, set role: 'teacher' and add a
+      // pendingApproval: true field so admins can vet new teacher accounts.
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    console.log('User document created');
+
+    // 3. Create student_progress document with all modules at 0
+    const initialProgress = {};
+    FIREBASE_MODULE_KEYS.forEach(key => { initialProgress[key] = 0; });
+    initialProgress.userId    = user.uid;
+    initialProgress.name      = fullName;
+    initialProgress.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('student_progress').doc(user.uid).set(initialProgress);
+    console.log('Progress document created');
+
+    // 4. Log the new user straight in (auth state change will fire)
+    currentUser     = user;
+    currentUserRole = 'student';
+    currentUserData = { name: fullName, email: email, role: 'student' };
+
+    // Trigger the same post-login flow as handleLogin
+    const navMain   = document.getElementById('nav-main');
+    const navAuth   = document.getElementById('nav-auth');
+    const userNameDisplay         = document.getElementById('user-name-display');
+    const studentDashboardLink    = document.getElementById('nav-student-dashboard');
+    const teacherDashboardLink    = document.getElementById('nav-teacher-dashboard');
+    const studentViewLink         = document.getElementById('nav-student-view');
+
+    if (navMain)  navMain.style.display  = 'flex';
+    if (navAuth)  navAuth.style.display  = 'flex';
+    if (userNameDisplay) userNameDisplay.textContent = firstName;
+    if (studentDashboardLink) studentDashboardLink.style.display = 'block';
+    if (teacherDashboardLink) teacherDashboardLink.style.display = 'none';
+    if (studentViewLink)      studentViewLink.style.display      = 'none';
+
+    if (typeof showPage === 'function') showPage('dashboard');
+    if (typeof initStudentDashboard === 'function') await initStudentDashboard();
+
+  } catch (err) {
+    console.error('Sign-up error:', err);
+    let msg = 'Sign-up failed. Please try again.';
+    if (err.code === 'auth/email-already-in-use') msg = 'An account with this email already exists.';
+    if (err.code === 'auth/invalid-email')        msg = 'Please enter a valid email address.';
+    if (err.code === 'auth/weak-password')        msg = 'Password must be at least 6 characters.';
+    showSignUpError(msg);
+    const btn = document.getElementById('signup-btn');
+    if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
+  }
+}
+
+function showSignUpError(msg) {
+  const errorDiv = document.getElementById('signup-error');
+  if (errorDiv) {
+    errorDiv.textContent   = msg;
+    errorDiv.style.display = 'block';
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
 window.handleLogin = handleLogin;
+window.handleSignUp = handleSignUp;
 window.logout = logout;
 window.setRole = setRole;
 window.updateStudentProgress = updateStudentProgress;
@@ -661,6 +768,16 @@ function setupEventListeners() {
   if (roleStudentBtn) roleStudentBtn.addEventListener('click', () => setRole('student'));
   if (roleTeacherBtn) roleTeacherBtn.addEventListener('click', () => setRole('teacher'));
   if (loginBtn) loginBtn.addEventListener('click', handleLogin);
+
+  // Sign-up button
+  const signupBtn = document.getElementById('signup-btn');
+  if (signupBtn) signupBtn.addEventListener('click', handleSignUp);
+
+  // Enter key on sign-up fields
+  ['signup-email', 'signup-password', 'signup-firstname', 'signup-lastname'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignUp(); });
+  });
   if (logoutBtn) logoutBtn.addEventListener('click', logout);
   
   // Allow Enter key in password field to submit login
